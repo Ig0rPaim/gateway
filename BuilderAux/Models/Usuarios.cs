@@ -24,11 +24,15 @@ namespace BuilderAux.Models
                 .IsNotNullOrEmpty(role, "Role", "Campo Cargo vazio")
                 .IsEmailOrEmpty(email, "Email", "Campo email vazio ou invalido");
             AddNotifications(contract);
-
+            
             Id = id;
             Name = nome;
             Senha = password;
-            Email = email;
+            Email = Criptografia
+                .CriptrografiaAndDescriptografia
+                 .Criptografar(
+                    email
+                 );
             DataCadastro = dataCadastro;
             DataAtualizacao = dataAtualizacao;
             Role = role;

@@ -1,9 +1,7 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\BuilderAux",
-    "\\BuilderAux\\Controllers"
+    ""
   ],
-  "SelectedNode": "\\BuilderAux\\Controllers\\UsuarioController.cs",
+  "SelectedNode": "\\AuxBuilder.sln",
   "PreviewInSolutionExplorer": false
 }

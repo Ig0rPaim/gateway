@@ -9,6 +9,9 @@ namespace BuilderAux.VOs
     {
         public string Name { get; set; }
         public string Email { get; set; }
+        public string? Role { get; set; }
+        public string? Senha { get; set; }
+
 
         public UsuariosVO(string name, string email)
         {

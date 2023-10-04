@@ -6,7 +6,7 @@
         {
             IConfiguration configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json/appsettings.Development.json")
+            .AddJsonFile("appsettings.json")
             .Build();
             return configuration.GetConnectionString("DatabaseBuilderAux")
             ?? throw new NullReferenceException();

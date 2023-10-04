@@ -67,9 +67,17 @@
               "target": "Package",
               "version": "[1.18.1, )"
             },
+            "SendGrid": {
+              "target": "Package",
+              "version": "[9.28.1, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.4.0, )"
+            },
+            "System.Data.SqlClient": {
+              "target": "Package",
+              "version": "[4.8.5, )"
             }
           },
           "imports": [
