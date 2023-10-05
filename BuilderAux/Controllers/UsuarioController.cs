@@ -1,4 +1,5 @@
-﻿using BuilderAux.Repository.Roles;
+﻿using BuilderAux.Exceptions;
+using BuilderAux.Repository.Roles;
 using BuilderAux.Repository.Usuarios;
 using BuilderAux.VOs;
 using Microsoft.AspNetCore.Mvc;
@@ -39,15 +40,20 @@ namespace BuilderAux.Controllers
             try
             {
                UsuariosVO retorno = await _usuariosRepository.Post(value);
+
                 return Ok(retorno);
             }
             catch (SqlException ex)
             {
                 throw new Exception(ex.Message);
             }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message); ;
+                return BadRequest(ex.Message); ;
             }
         }
         
@@ -60,9 +66,26 @@ namespace BuilderAux.Controllers
         }
 
         // DELETE api/<UsuarioController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{email}")]
+        public async Task<ActionResult> DeleteAsync(string email)
         {
+            try
+            {
+                bool retorno = await _usuariosRepository.Delete(email);
+                return Ok(retorno);
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

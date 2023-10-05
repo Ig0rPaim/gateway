@@ -1,6 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\BuilderAux",
+    "\\BuilderAux\\Repository",
+    "\\BuilderAux\\Repository\\Usuarios"
   ],
   "SelectedNode": "\\AuxBuilder.sln",
   "PreviewInSolutionExplorer": false
