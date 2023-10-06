@@ -3,8 +3,11 @@
     "",
     "\\BuilderAux",
     "\\BuilderAux\\Repository",
-    "\\BuilderAux\\Repository\\Usuarios"
+    "\\BuilderAux\\Repository\\Usuarios",
+    "\\BuilderAux\\SevicesGateWay",
+    "\\BuilderAux\\SevicesGateWay\\Mail",
+    "\\BuilderAux\\VOs"
   ],
-  "SelectedNode": "\\AuxBuilder.sln",
+  "SelectedNode": "\\BuilderAux\\SevicesGateWay\\Mail\\SendMail.cs",
   "PreviewInSolutionExplorer": false
 }

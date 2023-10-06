@@ -5,10 +5,11 @@ namespace BuilderAux.Repository.Usuarios
 {
     public interface IUsuariosRepository
     {
-        public Task<IEnumerable<TResult>> Get<TResult>();
-        public Task<TResult> Get<TResult, T>(T id);
-        public Task<UsuariosVO> Post(UsuariosVO user);
-        public Task<TResult> Put<TResult, T, T1>(T id, [FromBody] T1 value);
-        public Task<bool> Delete(string email);
+        public Task<Dictionary<string, string>> GetAsync();
+        public Task<Dictionary<string, string>> GetByEmailAsync(string email);
+        public Task<UsuariosVO> PostAsync(UsuariosVO user);
+        public Task PutAsync(string email, UsuariosVO user);
+        public Task<bool> DeleteAsync(string email);
+        public Task MudarSenha(string novaSenha, string email);
     }
 }

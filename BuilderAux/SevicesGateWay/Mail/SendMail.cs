@@ -9,7 +9,7 @@ namespace BuilderAux.SevicesGateWay.Mail
     {
         public static async Task SendGridMail(string remetenteEmail, string nomeRemetente, string destinatarioEmail, string nomeDestinatario, string titulo, string? corpo, string? link)
         {
-            var apiKey = "**************************************************";
+            var apiKey = "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";
             var client = new SendGridClient(apiKey);
 
             var from = new EmailAddress(remetenteEmail, nomeRemetente);

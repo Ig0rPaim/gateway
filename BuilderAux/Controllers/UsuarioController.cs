@@ -1,5 +1,4 @@
-﻿using BuilderAux.Exceptions;
-using BuilderAux.Repository.Roles;
+﻿using BuilderAux.DTO_s;
 using BuilderAux.Repository.Usuarios;
 using BuilderAux.VOs;
 using Microsoft.AspNetCore.Mvc;
@@ -18,34 +17,57 @@ namespace BuilderAux.Controllers
         {
             _usuariosRepository = usuariosRepository;
         }
-        // GET: api/<UsuarioController>
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<ActionResult> Get()
         {
-
-            return new string[] { "value1", "value2" };
+            try
+            {
+                return Ok(await _usuariosRepository.GetAsync());
+            }
+            catch (SqlException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
-        // GET api/<UsuarioController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{email}")]
+        public async Task<ActionResult> GetByEmailAsync(string email)
         {
-            return "value";
+            try
+            {
+                return Ok(await _usuariosRepository.GetByEmailAsync(email));
+            }
+            catch (SqlException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (ArgumentNullException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
-        // POST api/<UsuarioController>
         [HttpPost]
         public async Task<ActionResult> PostAsync([FromBody] UsuariosVO value)
         {
             try
             {
-               UsuariosVO retorno = await _usuariosRepository.Post(value);
+               UsuariosVO retorno = await _usuariosRepository.PostAsync(value);
 
                 return Ok(retorno);
             }
             catch (SqlException ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (ArgumentNullException ex)
             {
@@ -57,22 +79,57 @@ namespace BuilderAux.Controllers
             }
         }
         
-        
-
-        // PUT api/<UsuarioController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{email}")]
+        public async Task<ActionResult> PutAsync(string email, [FromBody] UsuariosVO user)
         {
+            try
+            {
+                await _usuariosRepository.PutAsync(email, user);
+                return Ok();
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message); ;
+            }
         }
 
-        // DELETE api/<UsuarioController>/5
         [HttpDelete("{email}")]
         public async Task<ActionResult> DeleteAsync(string email)
         {
             try
             {
-                bool retorno = await _usuariosRepository.Delete(email);
+                bool retorno = await _usuariosRepository.DeleteAsync(email);
                 return Ok(retorno);
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPatch]
+        public async Task<ActionResult> AtualizarSenha([FromBody] AtualizarSenha value)
+        {
+            try
+            {
+                await _usuariosRepository.MudarSenha(value.novaSenha, value.email);
+                return Ok();
             }
             catch (SqlException ex)
             {
