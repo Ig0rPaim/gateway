@@ -8,6 +8,6 @@
     "\\BuilderAux\\SevicesGateWay\\Mail",
     "\\BuilderAux\\VOs"
   ],
-  "SelectedNode": "\\BuilderAux\\SevicesGateWay\\Mail\\SendMail.cs",
+  "SelectedNode": "\\BuilderAux\\Repository\\Usuarios\\UsuariosRepository.cs",
   "PreviewInSolutionExplorer": false
 }

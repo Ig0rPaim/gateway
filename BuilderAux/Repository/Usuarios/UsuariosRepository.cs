@@ -13,7 +13,7 @@ namespace BuilderAux.Repository.Usuarios
     public class UsuariosRepository : IUsuariosRepository
     {
         public async Task<bool> DeleteAsync(string email)
-        {
+         {
             #region init
             SqlCommand cmd = new SqlCommand();
             string user;
@@ -28,7 +28,7 @@ namespace BuilderAux.Repository.Usuarios
                 cmd.Transaction = transaction;
                 #endregion
                 user = await FindEmail(email);
-                if (user == null) throw new Exceptions.NotFoundException("Usuario não encontrado");
+                if (user == "") throw new Exceptions.NotFoundException("Usuario não encontrado");
                 try
                 {
                     cmd.CommandText = @"DELETE FROM Usuarios
@@ -197,12 +197,13 @@ namespace BuilderAux.Repository.Usuarios
                           GeradorDeSenhas.GerarSenha()
                         );
                     #endregion
-                    cmd.CommandText = @"INSERT INTO Usuarios (Id, Nome, Email, Senha, DataCadastro, Role)
-                                      VALUES (@Id, @Nome, @Email, @Senha, @DataCadastro, @Role);";
+                    cmd.CommandText = @"INSERT INTO Usuarios (Id, Nome, Email, Senha, DataCadastro, Role, Telefone)
+                                      VALUES (@Id, @Nome, @Email, @Senha, @DataCadastro, @Role, @Telefone);";
                     #region Parametros
                     cmd.Parameters.Add("@Id", SqlDbType.NVarChar).Value = Guid.NewGuid().ToString();
                     cmd.Parameters.Add("@Email", SqlDbType.NVarChar).Value = CriptrografiaAndDescriptografia.Criptografar(user.Email);
                     cmd.Parameters.Add("@Nome", SqlDbType.NVarChar).Value = user.Name;
+                    cmd.Parameters.Add("@Telefone", SqlDbType.NVarChar).Value = user.Telefone;
                     cmd.Parameters.Add("@DataCadastro", SqlDbType.DateTime).Value = DateTime.Now;
                     cmd.Parameters.Add("@Role", SqlDbType.NVarChar).Value = role;
                     cmd.Parameters.Add("@Senha", SqlDbType.VarBinary).Value = CriptografiaSenha.getInByteArray(senhaRetorno);

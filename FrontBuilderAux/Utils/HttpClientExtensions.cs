@@ -1,0 +1,38 @@
+﻿using System.Net.Http.Headers;
+using System.Net.Mime;
+using System.Text.Json;
+
+namespace FrontBuilderAux.Utils
+{
+    public static class HttpClientExtensions
+    {
+        private static MediaTypeHeaderValue contentType;
+        public static async Task<T> ReadContetAs<T>(this HttpResponseMessage response)
+        {
+            if (!response.IsSuccessStatusCode) throw
+                    new ApplicationException(@$"Deu merda!
+                                             {response.ReasonPhrase}");
+            var dataAsString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            return JsonSerializer.Deserialize<T>(dataAsString,
+                new JsonSerializerOptions   
+                {PropertyNameCaseInsensitive = true});
+        }
+
+        public static Task<HttpResponseMessage> PostAsJson<T>(this HttpClient httpClient, T data, string url)
+        {
+            var dataAsString = JsonSerializer.Serialize(data);
+            var content = new StringContent(dataAsString);
+            content.Headers.ContentType = contentType;
+            return httpClient.PostAsync(url, content);
+        }
+        
+        public static Task<HttpResponseMessage> PutAsJson<T>(this HttpClient httpClient, T data, string url)
+        {
+            var dataAsString = JsonSerializer.Serialize(data);
+            var content = new StringContent(dataAsString);
+            content.Headers.ContentType = contentType;
+            return httpClient.PutAsync(url, content);
+        }
+    }
+}
+    

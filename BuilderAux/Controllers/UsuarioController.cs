@@ -123,7 +123,7 @@ namespace BuilderAux.Controllers
             }
         }
 
-        [HttpPatch]
+        [HttpPatch("{email}")]
         public async Task<ActionResult> AtualizarSenha([FromBody] AtualizarSenha value)
         {
             try
