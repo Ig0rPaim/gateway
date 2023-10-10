@@ -1,4 +1,5 @@
 ﻿using FrontBuilderAux.Models;
+using FrontBuilderAux.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -6,11 +7,11 @@ namespace FrontBuilderAux.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IBuilderAuxGateWayService _gateWay;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IBuilderAuxGateWayService gateWay)
         {
-            _logger = logger;
+            _gateWay = gateWay ?? throw new ArgumentNullException(nameof(gateWay));
         }
 
         public IActionResult Index()

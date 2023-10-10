@@ -418,5 +418,41 @@ namespace BuilderAux.Repository.Usuarios
                 finally { cn.Close(); }
             }
         }
+
+        public async Task<bool> Login(string email, string password)
+        {
+            #region init
+            SqlCommand cmd = new SqlCommand();
+            string user;
+            string pass;
+            string connectionString = StringConnection.GetString();
+            #endregion
+            using(SqlConnection cn = new SqlConnection(connectionString))
+            {
+                #region connection
+                cmd.Connection = cn;
+                cn.Open();
+                SqlTransaction transaction = cn.BeginTransaction();
+                cmd.Transaction = transaction;
+                #endregion
+                user = await FindEmail(email);
+                if (user == "") throw new Exceptions.NotFoundException("Usuario não encontrado");
+                try
+                {
+                    cmd.CommandText = @"SELECT Senha FROM Usuarios WHERE Id=@IdUser";
+                    cmd.Parameters.Add("@IdUser", SqlDbType.NVarChar).Value = user;
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    _ = reader.Read() ? pass = reader["Senha"].ToString() 
+                        ?? throw new ArgumentNullException() 
+                        : throw new ArgumentException();
+                    return true;
+                }
+                catch (SqlException er)
+                {
+                    throw er;
+                }
+                finally { cn.Close(); }
+            }
+        }
     }
 }

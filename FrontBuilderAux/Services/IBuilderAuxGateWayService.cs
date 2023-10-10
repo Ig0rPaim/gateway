@@ -1,4 +1,5 @@
-﻿using FrontBuilderAux.Models;
+﻿using FrontBuilderAux.DTOs;
+using FrontBuilderAux.Models;
 
 namespace FrontBuilderAux.Services
 {
@@ -10,5 +11,6 @@ namespace FrontBuilderAux.Services
         public Task<Usuarios> PutAsync(string email, Usuarios user);
         public Task<bool> DeleteAsync(string email);
         public Task MudarSenha(string novaSenha, string email);
+        public Task<bool> Login(UsuariosLogin user);
     }
 }

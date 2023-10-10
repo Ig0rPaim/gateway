@@ -6,9 +6,4 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Content Remove="Views\Login\Index.cshtml" />
-    <Content Remove="Views\Login\Index1.cshtml" />
-  </ItemGroup>
-
 </Project>

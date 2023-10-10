@@ -1,4 +1,5 @@
-﻿using FrontBuilderAux.Models;
+﻿using FrontBuilderAux.DTOs;
+using FrontBuilderAux.Models;
 using FrontBuilderAux.Utils;
 using System.Runtime.CompilerServices;
 
@@ -7,7 +8,8 @@ namespace FrontBuilderAux.Services
     public class BuilderAuxGateWayService : IBuilderAuxGateWayService
     {
         private readonly HttpClient _httpClient;
-        public const string BasePath = "api/Usuario";
+        private const string BasePath = "api/Usuario";
+        private const string BasePathToLogin = "api/Usuario/Login";
 
         public BuilderAuxGateWayService(HttpClient httpClient)
         {
@@ -56,6 +58,13 @@ namespace FrontBuilderAux.Services
                 return await response.ReadContetAs<Usuarios>();
             throw
                 new Exception("fudeu!");
+        }
+
+        public async Task<bool> Login(UsuariosLogin user)
+        {
+            var response = await _httpClient.PostAsJson(user, BasePathToLogin);
+            if (response.IsSuccessStatusCode) return true;
+            throw new Exception("erro no login");
         }
     }
 }

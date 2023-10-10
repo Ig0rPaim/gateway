@@ -1,39 +1,49 @@
-﻿using FrontBuilderAux.Services;
+﻿using FrontBuilderAux.DTOs;
+using FrontBuilderAux.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FrontBuilderAux.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly IBuilderAuxGateWayService _gateWayService;
-
-        public LoginController(IBuilderAuxGateWayService gateWayService)
+        private readonly IBuilderAuxGateWayService _gateWay;
+        public LoginController(IBuilderAuxGateWayService gateWay)
         {
-            _gateWayService = gateWayService ?? throw new ArgumentNullException(nameof(gateWayService));
+            _gateWay = gateWay ?? throw new ArgumentNullException(nameof(gateWay));
         }
-
-        public ActionResult Index()
+        public IActionResult Index()
         {
-            return View(); // Retorna a página de login
+			try
+			{
+                return View();
+            }
+			catch (Exception er)
+			{
+                TempData["MensagemErro"] = $"opa! Deu merda, hein: {er.Message}";
+                return RedirectToAction("Index");
+
+            }
         }
 
         [HttpPost]
-        public ActionResult Autenticar(string Usuario, string Senha)
+        public async Task<IActionResult> EntrarAsync(UsuariosLogin user)
         {
-            // Lógica de autenticação aqui
-            // Verifica se o usuário e senha são válidos
-
-            // Se a autenticação for bem-sucedida, redireciona para a página inicial
-            if (Usuario == "usuario" && Senha == "senha")
+            try
             {
-                // Lógica de autenticação bem-sucedida
-                return RedirectToAction("Index", "Home"); // Redireciona para a página inicial
+                if (ModelState.IsValid)
+                {
+                    bool result = await _gateWay.Login(user);
+                    if (result) { return RedirectToAction("Index", "Home"); }
+                    
+                }
+                TempData["MensagemErro"] = $"Usário e/ou senha invalido(s). Tente novamente.";
+                return View("Index");
             }
-            else
+
+            catch (Exception er)
             {
-                // Se a autenticação falhar, exibe uma mensagem de erro
-                ViewBag.MensagemErro = "Usuário ou senha incorretos";
-                return View("Index"); // Retorna a página de login com uma mensagem de erro
+                TempData["MensagemErro"] = $"opa! Deu merda, hein: {er.Message}";
+                return RedirectToAction("Index");
             }
         }
     }

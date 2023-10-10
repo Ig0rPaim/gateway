@@ -144,5 +144,31 @@ namespace BuilderAux.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("Login")]
+        public async Task<ActionResult> Login([FromBody] Login value)
+        {
+            try
+            {
+                bool result = await _usuariosRepository.Login(value.email, value.Senha);
+                if (result) return Ok();
+                else return BadRequest("Usuario não encontrado");
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
+
+    
+
 }
