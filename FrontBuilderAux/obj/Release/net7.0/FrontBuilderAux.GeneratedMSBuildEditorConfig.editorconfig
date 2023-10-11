@@ -16,6 +16,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\ioliveira\Documents\C#2\WebProjects\AuxBuilder\AuxBuilder\FrontBuilderAux
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/ioliveira/Documents/C\#2/WebProjects/AuxBuilder/AuxBuilder/FrontBuilderAux/Views/CreateAccount/IndexCreateAccount.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3JlYXRlQWNjb3VudFxJbmRleENyZWF0ZUFjY291bnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/ioliveira/Documents/C\#2/WebProjects/AuxBuilder/AuxBuilder/FrontBuilderAux/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

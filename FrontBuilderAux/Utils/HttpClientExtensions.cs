@@ -6,7 +6,7 @@ namespace FrontBuilderAux.Utils
 {
     public static class HttpClientExtensions
     {
-        private static MediaTypeHeaderValue contentType;
+        private static MediaTypeHeaderValue contentType = new MediaTypeHeaderValue("application/json");
         public static async Task<T> ReadContetAs<T>(this HttpResponseMessage response)
         {
             if (!response.IsSuccessStatusCode) throw
