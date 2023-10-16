@@ -2355,7 +2355,12 @@ fieldset:disabled a.btn {
   pointer-events: none;
 }
 
+.container {
+    width: 100%; /* Certifique-se de que a div pai tenha uma largura definida */
+}
+
 .btn-primary {
+  width: 90%;
   color: #fff;
   background-color: #4e73df;
   border-color: #4e73df;
@@ -10756,7 +10761,7 @@ a:focus {
 }
 
 .btn-icon-split {
-  padding: 0;
+  padding: 5%;
   overflow: hidden;
   display: inline-flex;
   align-items: stretch;

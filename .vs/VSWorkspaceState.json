@@ -6,8 +6,11 @@
     "\\BuilderAux\\Repository\\Usuarios",
     "\\BuilderAux\\SevicesGateWay",
     "\\BuilderAux\\SevicesGateWay\\Mail",
-    "\\BuilderAux\\VOs"
+    "\\BuilderAux\\VOs",
+    "\\FrontBuilderAux",
+    "\\FrontBuilderAux\\Views",
+    "\\FrontBuilderAux\\Views\\CreateAccount"
   ],
-  "SelectedNode": "\\BuilderAux\\Repository\\Usuarios\\UsuariosRepository.cs",
+  "SelectedNode": "\\FrontBuilderAux\\Views\\CreateAccount\\Index.cshtml",
   "PreviewInSolutionExplorer": false
 }

@@ -1,6 +1,6 @@
 ﻿@model Usuarios
 @{
-
+    ViewData["Title"] = "CreateAccount";
 }
 
 <!DOCTYPE html>
@@ -18,17 +18,25 @@
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
-    
+    @*<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css">*@
+    @*
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-          rel="stylesheet">
-    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-    <link></link>
+          rel="stylesheet">*@
+    @*<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>*@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="css/sb-admin-2.css" rel="stylesheet">
 
 </head>
+
+@if (TempData["MensagemErro"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <button type="button" class="btn btn-danger btn-sm close alert" data-bs-dimiss="alert" aria-label="Close">X</button>
+        @TempData["MensagemErro"]
+    </div>
+}
 
 <body class="bg-gradient-primary">
 
@@ -43,18 +51,18 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                                 </div>
-                                <form asp-controller="CreateAccount" asp-action="Create" method="post" class="user">
+                                <form asp-controller="CreateAccount" asp-action="CriarConta" method="post" class="user">
                                     <div class="form-group">
                                         @*<div class="col-sm-6 mb-3 mb-sm-0">
                                             <input type="text" class="form-control form-control-user" id="exampleFirstName" placeholder="First Name">
                                         </div>
                                         <div class="col-sm-6">*@
-                                            <input type="text" class="form-control form-control-user" id="exampleLastName" placeholder="Digíte seu Nome">
+                                            <input type="text" asp-for="Name" class="form-control form-control-user" id="exampleLastName" placeholder="Digíte seu Nome">
                                             @Html.ValidationMessageFor(x => x.Name)
                                         @*</div>*@
                                     </div>
                                     <div class="form-group">
-                                        <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Digíte seu Email">
+                                        <input type="email" asp-for="Email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Digíte seu Email">
                                         @Html.ValidationMessageFor(x => x.Email)
                                     </div>
                                     <div>
@@ -71,13 +79,33 @@
                                                     collapse and expand!
                                                 </div>*@
                                                 <br>
-                                                <div>
+                                                <div class="container">
+                                                    @*<button class="btn btn-primary btn-icon-split" onclick="" id="role">
+                                                        <span class="icon text-white-50">
+                                                            <i class="fas fa-flag"></i>
+                                                        </span>
+                                                        <span class="text">Engenheiro</span>
+                                                    </button>*@
+                                                    <input type="hidden" asp-for="Role" id="roleInput" name="Role">
+                                                    <a href="#" class="btn btn-primary btn-icon-split" onclick="setRoleAndSubmit('engenheiro')">
+                                                        <span class="icon text-white-50">
+                                                            <i class="fas fa-flag"></i>
+                                                        </span>
+                                                        <span class="text">Engenheiro</span>
+                                                    </a>
+                                                    @Html.ValidationMessageFor(x => x.Role)
+                                                </div>
+                                                <br>
+                                                </br>
+                                                <div class="container">
+                                                    <input type="hidden" asp-for="Role" id="roleInput" name="Role" value="" onclick="setRoleAndSubmit('client')">
                                                     <a href="#" class="btn btn-primary btn-icon-split">
                                                         <span class="icon text-white-50">
                                                             <i class="fas fa-flag"></i>
                                                         </span>
-                                                        <span class="text">Split Button Primary</span>
+                                                        <span class="text">Cliente</span>
                                                     </a>
+                                                        @Html.ValidationMessageFor(x => x.Role)
                                                 </div>
                                                 </br>
                                                 
@@ -86,17 +114,19 @@
                                     </div>
                                     <div class="form-group row">
                                         <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Digite sua senha">
+                                            <input type="password" asp-for="Senha" class="form-control form-control-user" id="exampleInputPassword" placeholder="Digite sua senha">
                                             @Html.ValidationMessageFor(x => x.Senha)
                                         </div>
                                         <div class="col-sm-6">
-                                            <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repita sua senha">
-                                            @Html.ValidationMessageFor(x => x.Senha)
+                                            <input type="password" asp-for=ConfirmarSenha class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repita sua senha">
+                                            @Html.ValidationMessageFor(y => y.ConfirmarSenha)
                                         </div>
-                                    </div>
+                                    </div>@*
                                     <a href="login.html" class="btn btn-primary btn-user btn-block">
                                         Register Account
-                                    </a>@*
+                                    </a>*@
+                                    <button type="submit" class="btn btn-primary btn-user btn-block">Criar conta</button>
+                                    @*
                                     <hr>
                                     <a href="index.html" class="btn btn-google btn-user btn-block">
                                         <i class="fab fa-google fa-fw"></i> Register with Google
@@ -104,6 +134,8 @@
                                     <a href="index.html" class="btn btn-facebook btn-user btn-block">
                                         <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
                                     </a>*@
+                                   
+
                                 </form>
                                 <hr>
                                 <div class="text-center">
@@ -119,6 +151,25 @@
             </div>
         </div>
     </div>
+
+    @*<script>
+        function setRoleAndSubmit(role) {
+            debugger;
+            document.getElementById('roleInput').value = role; // Define o valor da role no campo de entrada oculto
+            // Submete o formulário
+            //document.forms[0].submit();
+        }
+    </script>
+    *@
+    <script>
+        function setRoleAndSubmit(role) {
+            //debugger;
+            var hiddenInput = document.getElementById('roleInput'); // Define o valor da role no campo de entrada oculto
+            hiddenInput.value = role;
+            // Submete o formulário
+            //document.forms[0].submit();
+        }
+    </script>
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
@@ -146,6 +197,13 @@
             <span class="text">Split Button Primary</span>
         </a>
     </div>*@
+
+    <script>
+        function retornoRole()
+        {
+            $("#role").val("engenheiro");
+        }
+    </script>
 
 </body>
 </html>
