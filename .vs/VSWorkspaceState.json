@@ -8,9 +8,10 @@
     "\\BuilderAux\\SevicesGateWay\\Mail",
     "\\BuilderAux\\VOs",
     "\\FrontBuilderAux",
+    "\\FrontBuilderAux\\Services",
     "\\FrontBuilderAux\\Views",
     "\\FrontBuilderAux\\Views\\CreateAccount"
   ],
-  "SelectedNode": "\\FrontBuilderAux\\Views\\CreateAccount\\Index.cshtml",
+  "SelectedNode": "\\FrontBuilderAux\\Services\\BuilderAuxGateWayService.cs",
   "PreviewInSolutionExplorer": false
 }

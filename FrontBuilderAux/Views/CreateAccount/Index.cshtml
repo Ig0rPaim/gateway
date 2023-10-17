@@ -17,23 +17,18 @@
     <title>SB Admin 2 - Register</title>
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    @*<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css">*@
-    @*
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-          rel="stylesheet">*@
-    @*<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>*@
+    <link href="@Url.Content("~/vendor/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link href="css/sb-admin-2.css" rel="stylesheet">
+    <link href="@Url.Content("~/css/sb-admin-2.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/css/sb-admin-2.css")" rel="stylesheet">
 
 </head>
 
 @if (TempData["MensagemErro"] != null)
 {
-    <div class="alert alert-danger" role="alert">
-        <button type="button" class="btn btn-danger btn-sm close alert" data-bs-dimiss="alert" aria-label="Close">X</button>
+    <div class="alert alert-danger" role="alert" id="divDeErro">
+        <button type="button" class="btn btn-danger btn-sm close alert" data-bs-dimiss="alert" aria-label="Close" id="erro">X</button>
         @TempData["MensagemErro"]
     </div>
 }
@@ -53,13 +48,8 @@
                                 </div>
                                 <form asp-controller="CreateAccount" asp-action="CriarConta" method="post" class="user">
                                     <div class="form-group">
-                                        @*<div class="col-sm-6 mb-3 mb-sm-0">
-                                            <input type="text" class="form-control form-control-user" id="exampleFirstName" placeholder="First Name">
-                                        </div>
-                                        <div class="col-sm-6">*@
                                             <input type="text" asp-for="Name" class="form-control form-control-user" id="exampleLastName" placeholder="Digíte seu Nome">
                                             @Html.ValidationMessageFor(x => x.Name)
-                                        @*</div>*@
                                     </div>
                                     <div class="form-group">
                                         <input type="email" asp-for="Email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Digíte seu Email">
@@ -73,19 +63,8 @@
                                             </a>
                                             <!-- Card Content - Collapse -->
                                             <div class="collapse show" id="collapseCardExample" style="">
-                                                @*<div class="card-body">
-                                                    This is a collapsable card example using Bootstrap's built in collapse
-                                                    functionality. <strong>Click on the card header</strong> to see the card body
-                                                    collapse and expand!
-                                                </div>*@
                                                 <br>
                                                 <div class="container">
-                                                    @*<button class="btn btn-primary btn-icon-split" onclick="" id="role">
-                                                        <span class="icon text-white-50">
-                                                            <i class="fas fa-flag"></i>
-                                                        </span>
-                                                        <span class="text">Engenheiro</span>
-                                                    </button>*@
                                                     <input type="hidden" asp-for="Role" id="roleInput" name="Role">
                                                     <a href="#" class="btn btn-primary btn-icon-split" onclick="setRoleAndSubmit('engenheiro')">
                                                         <span class="icon text-white-50">
@@ -98,8 +77,8 @@
                                                 <br>
                                                 </br>
                                                 <div class="container">
-                                                    <input type="hidden" asp-for="Role" id="roleInput" name="Role" value="" onclick="setRoleAndSubmit('client')">
-                                                    <a href="#" class="btn btn-primary btn-icon-split">
+                                                    <input type="hidden" asp-for="Role" id="roleInput" name="Role">
+                                                    <a href="#" class="btn btn-primary btn-icon-split" onclick="setRoleAndSubmit('client')">
                                                         <span class="icon text-white-50">
                                                             <i class="fas fa-flag"></i>
                                                         </span>
@@ -113,29 +92,12 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <input type="password" asp-for="Senha" class="form-control form-control-user" id="exampleInputPassword" placeholder="Digite sua senha">
-                                            @Html.ValidationMessageFor(x => x.Senha)
+                                        <div class="form-group">
+                                            <input type="text" asp-for="Telefone" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Digite seu telefone" data-val="true" data-val-required="Campo Obrigatório" name="Telefone">
+                                            @Html.ValidationMessageFor(x => x.Telefone)
                                         </div>
-                                        <div class="col-sm-6">
-                                            <input type="password" asp-for=ConfirmarSenha class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repita sua senha">
-                                            @Html.ValidationMessageFor(y => y.ConfirmarSenha)
-                                        </div>
-                                    </div>@*
-                                    <a href="login.html" class="btn btn-primary btn-user btn-block">
-                                        Register Account
-                                    </a>*@
+                                    </div>
                                     <button type="submit" class="btn btn-primary btn-user btn-block">Criar conta</button>
-                                    @*
-                                    <hr>
-                                    <a href="index.html" class="btn btn-google btn-user btn-block">
-                                        <i class="fab fa-google fa-fw"></i> Register with Google
-                                    </a>
-                                    <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                                        <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
-                                    </a>*@
-                                   
-
                                 </form>
                                 <hr>
                                 <div class="text-center">
@@ -152,51 +114,27 @@
         </div>
     </div>
 
-    @*<script>
-        function setRoleAndSubmit(role) {
-            debugger;
-            document.getElementById('roleInput').value = role; // Define o valor da role no campo de entrada oculto
-            // Submete o formulário
-            //document.forms[0].submit();
-        }
-    </script>
-    *@
-    <script>
-        function setRoleAndSubmit(role) {
-            //debugger;
-            var hiddenInput = document.getElementById('roleInput'); // Define o valor da role no campo de entrada oculto
-            hiddenInput.value = role;
-            // Submete o formulário
-            //document.forms[0].submit();
-        }
-    </script>
-
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    @*<script src="~lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
+    <script src="@Url.Content("~/vendor/jquery/jquery.min.js")"></script>
+    <script src="@Url.Content("~/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
     
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="@Url.Content("~/vendor/jquery-easing/jquery.easing.min.js")"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="@Url.Content("~/js/sb-admin-2.min.js")"></script>
+    <script src="@Url.Content("~/js/sb-admin-2.js")"></script>
 
-
-
-@*    <div style="width: 100%;/* height: 100%; */">
-        <a href="#" class="btn btn-primary btn-icon-split" style="
-    width: 100%;
-">
-            <span class="icon text-white-50">
-                <i class="fas fa-flag"></i>
-            </span>
-            <span class="text">Split Button Primary</span>
-        </a>
-    </div>*@
+    <script>
+        function setRoleAndSubmit(role) {
+            //debugger;
+            var hiddenInput = document.getElementById('roleInput'); // Define o valor da role no campo de entrada oculto
+            hiddenInput.value = role;
+        }
+    </script>
 
     <script>
         function retornoRole()
@@ -204,6 +142,19 @@
             $("#role").val("engenheiro");
         }
     </script>
+
+    <script>
+        function ocultarDiv(selectorBotao, selectorDiv) {
+            $(selectorBotao).click(function () {
+                $(selectorDiv).hide();
+            });
+        }
+
+        $(document).ready(function () {
+            ocultarDiv("#erro", "#divDeErro");
+        });
+    </script>
+
 
 </body>
 </html>

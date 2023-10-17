@@ -42,13 +42,11 @@ namespace FrontBuilderAux.Services
             throw new NotImplementedException();
         }
 
-        public async Task<Usuarios> PostAsync(Usuarios user)
+        public async Task<bool> PostAsync(UsuariosCreateAccount user)
         {
             var response = await _httpClient.PostAsJson(user, BasePath);
-            if (response.IsSuccessStatusCode)
-                return await response.ReadContetAs<Usuarios>();
-            throw
-                new Exception("fudeu!");
+            if (response.IsSuccessStatusCode) return true;
+            throw new Exception("fudeu!");
         }
 
         public async Task<Usuarios> PutAsync(string email, Usuarios user)

@@ -3,7 +3,6 @@ using BuilderAux.Senhas;
 using BuilderAux.Criptografia;
 using BuilderAux.VOs;
 using System.Data;
-//using System.Data.SqlClients;
 using System.Data.SqlClient;
 using BuilderAux.SevicesGateWay.Mail;
 using BuilderAux.Exceptions;

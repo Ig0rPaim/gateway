@@ -1,4 +1,5 @@
-﻿using FrontBuilderAux.Models;
+﻿using FrontBuilderAux.DTOs;
+using FrontBuilderAux.Models;
 using FrontBuilderAux.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,20 +25,26 @@ namespace FrontBuilderAux.Controllers
 
             }
         }
+
         [HttpPost]
-        public async Task<IActionResult> CriarContaAsync(Usuarios user)
+        public async Task<IActionResult> CriarContaAsync(UsuariosCreateAccount user)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _ = await _gateWay.PostAsync(user);
+                    bool result = await _gateWay.PostAsync(user);
+                    if (result) 
+                    {
+                        TempData["MensagemSucesso"] = $"Você foi Cadastrado com sucesso";
+                        return RedirectToAction("Index", "Login"); 
+                    }
                 }
 
                 var mensagensErro = ModelState.Values.SelectMany(v => v.Errors)
                                        .Select(e => e.ErrorMessage)
                                        .ToList();
-                TempData["MessageErro"] = mensagensErro;
+                TempData["MensagemErro"] = $"Opa deu merda, hein: {mensagensErro}";
                 return View("Index");
             }
             catch (Exception er)
