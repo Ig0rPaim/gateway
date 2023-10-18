@@ -13,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{EB
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuilderAux", "BuilderAux\BuilderAux.csproj", "{3746BCDD-E5B5-4F02-8EDC-B9C772B5094C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authetication", "Authetication\Authetication.csproj", "{9F299FC0-BCB3-444A-9013-B8D10AA62EC0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,10 +31,6 @@ Global
 		{3746BCDD-E5B5-4F02-8EDC-B9C772B5094C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3746BCDD-E5B5-4F02-8EDC-B9C772B5094C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3746BCDD-E5B5-4F02-8EDC-B9C772B5094C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9F299FC0-BCB3-444A-9013-B8D10AA62EC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9F299FC0-BCB3-444A-9013-B8D10AA62EC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9F299FC0-BCB3-444A-9013-B8D10AA62EC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9F299FC0-BCB3-444A-9013-B8D10AA62EC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,7 +38,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C103181D-1731-4441-9029-D25F0C60FD2E} = {94A2213E-B983-4685-9454-4E5625577095}
 		{3746BCDD-E5B5-4F02-8EDC-B9C772B5094C} = {EB269A22-F171-4A9E-989C-9A71BD197DE2}
-		{9F299FC0-BCB3-444A-9013-B8D10AA62EC0} = {EB269A22-F171-4A9E-989C-9A71BD197DE2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {65AE96F1-71CB-409E-97C9-64E759B32FA5}

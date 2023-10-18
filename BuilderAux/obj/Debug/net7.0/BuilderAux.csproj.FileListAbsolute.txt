@@ -41,3 +41,8 @@ C:\Users\ioliveira\Documents\C#2\WebProjects\AuxBuilder\AuxBuilder\BuilderAux\ob
 C:\Users\ioliveira\Documents\C#2\WebProjects\AuxBuilder\AuxBuilder\BuilderAux\obj\Debug\net7.0\BuilderAux.pdb
 C:\Users\ioliveira\Documents\C#2\WebProjects\AuxBuilder\AuxBuilder\BuilderAux\obj\Debug\net7.0\BuilderAux.genruntimeconfig.cache
 C:\Users\ioliveira\Documents\C#2\WebProjects\AuxBuilder\AuxBuilder\BuilderAux\obj\Debug\net7.0\ref\BuilderAux.dll
+C:\Users\ioliveira\Documents\C#2\WebProjects\AuxBuilder\AuxBuilder\BuilderAux\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\ioliveira\Documents\C#2\WebProjects\AuxBuilder\AuxBuilder\BuilderAux\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\ioliveira\Documents\C#2\WebProjects\AuxBuilder\AuxBuilder\BuilderAux\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\ioliveira\Documents\C#2\WebProjects\AuxBuilder\AuxBuilder\BuilderAux\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\ioliveira\Documents\C#2\WebProjects\AuxBuilder\AuxBuilder\BuilderAux\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll

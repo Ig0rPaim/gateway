@@ -146,12 +146,12 @@ namespace BuilderAux.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult> Login([FromBody] Login value)
+        public async Task<ActionResult> Login([FromBody] UsuariosVO value)
         {
             try
             {
-                bool result = await _usuariosRepository.Login(value.email, value.Senha);
-                if (result) return Ok();
+                var result = await _usuariosRepository.Login(value);
+                if (result != string.Empty) return Ok(result);
                 else return BadRequest("Usuario não encontrado");
             }
             catch (SqlException ex)

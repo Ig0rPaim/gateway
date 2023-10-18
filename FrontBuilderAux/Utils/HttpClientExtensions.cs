@@ -14,8 +14,8 @@ namespace FrontBuilderAux.Utils
                                              {response.ReasonPhrase}");
             var dataAsString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             return JsonSerializer.Deserialize<T>(dataAsString,
-                new JsonSerializerOptions   
-                {PropertyNameCaseInsensitive = true});
+                new JsonSerializerOptions
+                { PropertyNameCaseInsensitive = true });
         }
 
         public static Task<HttpResponseMessage> PostAsJson<T>(this HttpClient httpClient, T data, string url)

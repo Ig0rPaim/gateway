@@ -15,7 +15,7 @@ namespace FrontBuilderAux.Models
         public string Role { get; set; }
         public string Senha { get; set; }
         [Compare("Senha", ErrorMessage = "As senhas não coincidem")]
-        public string ConfirmarSenha { get; set; }
+        public string? ConfirmarSenha { get; set; }
 
 
         public Usuarios()
@@ -31,6 +31,16 @@ namespace FrontBuilderAux.Models
             Senha = senha ?? throw new ArgumentNullException();
             ConfirmarSenha = confirmarSenha ?? throw new ArgumentNullException();
         }
+
+        public Usuarios(string name, string email, string telefone, string role, string senha)
+        {
+            Name = name ?? throw new ArgumentNullException();
+            Email = email ?? throw new ArgumentNullException();
+            Telefone = telefone ?? throw new ArgumentNullException();
+            Role = role ?? throw new ArgumentNullException();
+            Senha = senha ?? throw new ArgumentNullException();
+        }
+
         public Usuarios(string name, string email, string telefone, string role)
         {
             Name = name ?? throw new ArgumentNullException();

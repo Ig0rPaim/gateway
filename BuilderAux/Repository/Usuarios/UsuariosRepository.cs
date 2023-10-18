@@ -6,6 +6,8 @@ using System.Data;
 using System.Data.SqlClient;
 using BuilderAux.SevicesGateWay.Mail;
 using BuilderAux.Exceptions;
+using BuilderAux.SevicesGateWay.Token;
+using BuilderAux.DTO_s;
 
 namespace BuilderAux.Repository.Usuarios
 {
@@ -418,13 +420,15 @@ namespace BuilderAux.Repository.Usuarios
             }
         }
 
-        public async Task<bool> Login(string email, string password)
+        public async Task<string> Login(UsuariosVO usuario)
         {
             #region init
             SqlCommand cmd = new SqlCommand();
             string user;
-            string pass;
+            byte[] passUser = Criptografia.CriptografiaSenha.getInByteArray(usuario.Senha ?? string.Empty);
+            byte[] pass;
             string connectionString = StringConnection.GetString();
+            var generateToken = new TokenService();
             #endregion
             using(SqlConnection cn = new SqlConnection(connectionString))
             {
@@ -434,23 +438,64 @@ namespace BuilderAux.Repository.Usuarios
                 SqlTransaction transaction = cn.BeginTransaction();
                 cmd.Transaction = transaction;
                 #endregion
-                user = await FindEmail(email);
+                user = await FindEmail(usuario.Email);
                 if (user == "") throw new Exceptions.NotFoundException("Usuario não encontrado");
                 try
                 {
                     cmd.CommandText = @"SELECT Senha FROM Usuarios WHERE Id=@IdUser";
                     cmd.Parameters.Add("@IdUser", SqlDbType.NVarChar).Value = user;
                     SqlDataReader reader = cmd.ExecuteReader();
-                    _ = reader.Read() ? pass = reader["Senha"].ToString() 
-                        ?? throw new ArgumentNullException() 
+                    _ = reader.Read() ? pass = (byte[])(reader["Senha"] 
+                        ?? throw new ArgumentNullException())
                         : throw new ArgumentException();
-                    return true;
+                    if(pass.SequenceEqual(passUser)) { return generateToken.Generate(usuario); }
+                    return string.Empty;
                 }
                 catch (SqlException er)
                 {
                     throw er;
                 }
                 finally { cn.Close(); }
+            }
+        }
+
+        private Task<UsuariosVO> GetDatas(Login userLogin)
+        {
+            string connectionString = StringConnection.GetString();
+            SqlCommand cmd = new SqlCommand();
+            UsuariosVO user;
+
+            using( SqlConnection cn = new SqlConnection( connectionString))
+            {
+                cmd.Connection = cn;
+                cn.Open();
+
+                try
+                {
+                    cmd.CommandText = @"SELECT Nome, Telefone, Cargo 
+                                        FROM Usuarios 
+                                        WHERE Id=@IdUser
+                                        INNER JOIN RolesUsuarios 
+                                        ON Usuarios.Role = RolesUsuarios.Id";
+                    cmd.Parameters.Add("@IdUser", SqlDbType.NVarChar).Value = userLogin.email;
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if(reader.Read()) {
+                        user.Name = reader["Nome"]
+                            .ToString() ?? 
+                            throw new ArgumentNullException();
+                        user.Telefone = reader["Telefone"]
+                            .ToString() ?? 
+                            throw new ArgumentNullException();
+                        user.Role = reader["Cargo"]
+                            .ToString() ??
+                            throw new ArgumentNullException();
+                    }   
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
             }
         }
     }
