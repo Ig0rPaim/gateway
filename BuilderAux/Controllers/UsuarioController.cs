@@ -1,6 +1,7 @@
 ﻿using BuilderAux.DTO_s;
 using BuilderAux.Repository.Usuarios;
 using BuilderAux.VOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
 
@@ -19,10 +20,12 @@ namespace BuilderAux.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult> Get()
         {
             try
             {
+                string userName = User.Identity.Name ?? string.Empty;
                 return Ok(await _usuariosRepository.GetAsync());
             }
             catch (SqlException e)
@@ -36,10 +39,12 @@ namespace BuilderAux.Controllers
         }
 
         [HttpGet("{email}")]
+        [Authorize]
         public async Task<ActionResult> GetByEmailAsync(string email)
         {
             try
             {
+                string userName = User.Identity.Name ?? string.Empty;
                 return Ok(await _usuariosRepository.GetByEmailAsync(email));
             }
             catch (SqlException e)
@@ -57,11 +62,13 @@ namespace BuilderAux.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> PostAsync([FromBody] UsuariosVO value)
         {
             try
             {
-               UsuariosVO retorno = await _usuariosRepository.PostAsync(value);
+                string userName = User.Identity.Name ?? string.Empty;
+                UsuariosVO retorno = await _usuariosRepository.PostAsync(value);
 
                 return Ok(retorno);
             }
@@ -80,10 +87,12 @@ namespace BuilderAux.Controllers
         }
         
         [HttpPut("{email}")]
+        [Authorize]
         public async Task<ActionResult> PutAsync(string email, [FromBody] UsuariosVO user)
         {
             try
             {
+                string userName = User.Identity.Name ?? string.Empty;
                 await _usuariosRepository.PutAsync(email, user);
                 return Ok();
             }
@@ -102,10 +111,12 @@ namespace BuilderAux.Controllers
         }
 
         [HttpDelete("{email}")]
+        [Authorize]
         public async Task<ActionResult> DeleteAsync(string email)
         {
             try
             {
+                string userName = User.Identity.Name ?? string.Empty;
                 bool retorno = await _usuariosRepository.DeleteAsync(email);
                 return Ok(retorno);
             }
@@ -124,10 +135,12 @@ namespace BuilderAux.Controllers
         }
 
         [HttpPatch("{email}")]
+        [Authorize]
         public async Task<ActionResult> AtualizarSenha([FromBody] AtualizarSenha value)
         {
             try
             {
+                string userName = User.Identity.Name ?? string.Empty;
                 await _usuariosRepository.MudarSenha(value.novaSenha, value.email);
                 return Ok();
             }
@@ -150,6 +163,7 @@ namespace BuilderAux.Controllers
         {
             try
             {
+                string userName = User.Identity.Name ?? string.Empty;
                 string result = await _usuariosRepository.Login(value);
                 if (!string.IsNullOrEmpty(result)) return Ok(result);
                 else return BadRequest("Usuario não encontrado");

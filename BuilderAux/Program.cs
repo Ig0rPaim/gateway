@@ -1,9 +1,47 @@
 using BuilderAux.Repository.Roles;
 using BuilderAux.Repository.Usuarios;
 using BuilderAux.SevicesGateWay.Token;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services
+    .AddAuthentication(x =>
+    {
+        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(x =>
+    {
+        // Obriga uso do HTTPs
+        x.RequireHttpsMetadata = false;
 
+        // Salva os dados de login no AuthenticationProperties
+        x.SaveToken = true;
+
+        // Configurações para leitura do Token
+        x.TokenValidationParameters = new TokenValidationParameters
+        {
+            // Chave que usamos para gerar o Token
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder
+                    .Configuration.GetSection("Keys")
+                    .GetSection("TokenKey")
+                    .Value ?? string.Empty)),
+            // Validações externas
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
+
+
+//ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+
+builder.Services.AddAuthorization();
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -16,6 +54,8 @@ builder.Services.AddTransient<TokenService>();
 
 
 var app = builder.Build();
+app.UseAuthentication();
+app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
