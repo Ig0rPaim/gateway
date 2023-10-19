@@ -59,10 +59,22 @@ namespace FrontBuilderAux.Services
         }
 
         public async Task<bool> Login(UsuariosLogin user)
-        {
-            var response = await _httpClient.PostAsJson(user, BasePathToLogin);
-            if (response.IsSuccessStatusCode) return true;
-            throw new Exception("erro no login");
+         {
+            try
+            {
+                var response = await _httpClient.PostAsJson(user, BasePathToLogin);
+                if (response.IsSuccessStatusCode) return true;
+                else
+                {
+                    var responseString = response.Content.ReadAsStringAsync();
+                    var result = responseString.Result;
+                    throw new Exception(result);
+                }
+            }
+            catch (Exception er)
+            {
+                throw new Exception(er.Message);
+            }
         }
     }
 }

@@ -14,7 +14,7 @@ namespace BuilderAux.VOs
         public string? Senha { get; set; }
 
 
-        public UsuariosVO(string name, string email, string telefone)
+        public UsuariosVO(string name, string email, string telefone, string? role)
         {
             var contract = new Contract<Usuarios>()
                 .IsNotNullOrEmpty(name, "Nome", "Campo nome vazio")
@@ -25,6 +25,7 @@ namespace BuilderAux.VOs
             Name = name;
             Email = email;
             Telefone = telefone;
+            if(role != null) { Role = role; }
 
         }
     }

@@ -1,5 +1,6 @@
 using BuilderAux.Repository.Roles;
 using BuilderAux.Repository.Usuarios;
+using BuilderAux.SevicesGateWay.Token;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRolesRepository, RolesRepository>();
 builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>();
+builder.Services.AddTransient<TokenService>();
 
 
 var app = builder.Build();

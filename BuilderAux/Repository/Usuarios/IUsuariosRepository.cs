@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BuilderAux.VOs;
+using BuilderAux.DTO_s;
 
 namespace BuilderAux.Repository.Usuarios
 {
@@ -11,6 +12,6 @@ namespace BuilderAux.Repository.Usuarios
         public Task PutAsync(string email, UsuariosVO user);
         public Task<bool> DeleteAsync(string email);
         public Task MudarSenha(string novaSenha, string email);
-        public Task<bool> Login(string email, string password);
+        public Task<string> Login(Login userLogin);
     }
 }

@@ -6,6 +6,10 @@ using System.Data;
 using System.Data.SqlClient;
 using BuilderAux.SevicesGateWay.Mail;
 using BuilderAux.Exceptions;
+using BuilderAux.DTO_s;
+using BuilderAux.SevicesGateWay.Token;
+
+//Em produção
 
 namespace BuilderAux.Repository.Usuarios
 {
@@ -418,12 +422,14 @@ namespace BuilderAux.Repository.Usuarios
             }
         }
 
-        public async Task<bool> Login(string email, string password)
+        public async Task<string> Login(Login userLogin)
         {
             #region init
             SqlCommand cmd = new SqlCommand();
             string user;
-            string pass;
+            byte[] passUser = CriptografiaSenha.getInByteArray(userLogin.Senha ?? string.Empty);
+            byte[] pass;
+            TokenService generateToken = new TokenService();
             string connectionString = StringConnection.GetString();
             #endregion
             using(SqlConnection cn = new SqlConnection(connectionString))
@@ -434,17 +440,29 @@ namespace BuilderAux.Repository.Usuarios
                 SqlTransaction transaction = cn.BeginTransaction();
                 cmd.Transaction = transaction;
                 #endregion
-                user = await FindEmail(email);
+                user = await FindEmail(userLogin.email);
                 if (user == "") throw new Exceptions.NotFoundException("Usuario não encontrado");
                 try
                 {
-                    cmd.CommandText = @"SELECT Senha FROM Usuarios WHERE Id=@IdUser";
+                    cmd.CommandText = @"SELECT Nome, Telefone, senha, Cargo 
+                                      FROM Usuarios 
+                                      INNER JOIN RolesUsuarios 
+                                      ON Usuarios.Role = RolesUsuarios.Id
+                                      WHERE Usuarios.Id = @IdUser;
+                                      ";
                     cmd.Parameters.Add("@IdUser", SqlDbType.NVarChar).Value = user;
                     SqlDataReader reader = cmd.ExecuteReader();
-                    _ = reader.Read() ? pass = reader["Senha"].ToString() 
+                    _ = reader.Read() ? pass = (byte[])reader["Senha"]
                         ?? throw new ArgumentNullException() 
-                        : throw new ArgumentException();
-                    return true;
+                        : throw new Exception();
+                    UsuariosVO userToken = new UsuariosVO(
+                        reader["Nome"].ToString() ?? string.Empty,
+                        userLogin.email,
+                        reader["Telefone"].ToString() ?? string.Empty,
+                        reader["Cargo"].ToString() ?? string.Empty
+                    );
+                    if (pass.SequenceEqual(passUser)) { return generateToken.Generate(userToken); }
+                    return string.Empty;
                 }
                 catch (SqlException er)
                 {

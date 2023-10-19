@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ioliveira\\Documents\\C#2\\WebProjects\\AuxBuilder\\AuxBuilder\\BuilderAux\\BuilderAux.csproj": {}
+    "C:\\Users\\ioliveira\\Documents\\C#2\\BA\\gateway\\BuilderAux\\BuilderAux.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ioliveira\\Documents\\C#2\\WebProjects\\AuxBuilder\\AuxBuilder\\BuilderAux\\BuilderAux.csproj": {
+    "C:\\Users\\ioliveira\\Documents\\C#2\\BA\\gateway\\BuilderAux\\BuilderAux.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ioliveira\\Documents\\C#2\\WebProjects\\AuxBuilder\\AuxBuilder\\BuilderAux\\BuilderAux.csproj",
+        "projectUniqueName": "C:\\Users\\ioliveira\\Documents\\C#2\\BA\\gateway\\BuilderAux\\BuilderAux.csproj",
         "projectName": "BuilderAux",
-        "projectPath": "C:\\Users\\ioliveira\\Documents\\C#2\\WebProjects\\AuxBuilder\\AuxBuilder\\BuilderAux\\BuilderAux.csproj",
+        "projectPath": "C:\\Users\\ioliveira\\Documents\\C#2\\BA\\gateway\\BuilderAux\\BuilderAux.csproj",
         "packagesPath": "C:\\Users\\ioliveira\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ioliveira\\Documents\\C#2\\WebProjects\\AuxBuilder\\AuxBuilder\\BuilderAux\\obj\\",
+        "outputPath": "C:\\Users\\ioliveira\\Documents\\C#2\\BA\\gateway\\BuilderAux\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -78,6 +78,10 @@
             "System.Data.SqlClient": {
               "target": "Package",
               "version": "[4.8.5, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[7.0.3, )"
             }
           },
           "imports": [

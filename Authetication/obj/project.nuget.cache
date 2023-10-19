@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/B4zMdETRexEy0f3ZRIm1tuIVkIg5hFsvGafW7D+51DVGvBWg+BZ0AywOXs/Jx9MKrMwIWk+LgHalHLiao3iCQ==",
+  "dgSpecHash": "8p+cW2GMCgkjQU8aNhOtV8X+NJxGbiozUU9PUNmOXqBd+JzNmStMUE04DAmWjw5ntwBkJg9ch6Rd2X8e6T3hzg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\ioliveira\\Documents\\C#2\\WebProjects\\AuxBuilder\\AuxBuilder\\Authetication\\Authetication.csproj",
+  "projectFilePath": "C:\\Users\\ioliveira\\Documents\\C#2\\BA\\gateway\\Authetication\\Authetication.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ioliveira\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.5\\microsoft.aspnetcore.openapi.7.0.5.nupkg.sha512",
     "C:\\Users\\ioliveira\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",

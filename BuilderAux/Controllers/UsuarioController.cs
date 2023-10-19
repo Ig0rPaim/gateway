@@ -150,8 +150,8 @@ namespace BuilderAux.Controllers
         {
             try
             {
-                bool result = await _usuariosRepository.Login(value.email, value.Senha);
-                if (result) return Ok();
+                string result = await _usuariosRepository.Login(value);
+                if (!string.IsNullOrEmpty(result)) return Ok(result);
                 else return BadRequest("Usuario não encontrado");
             }
             catch (SqlException ex)
