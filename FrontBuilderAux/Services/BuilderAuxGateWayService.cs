@@ -70,8 +70,9 @@ namespace FrontBuilderAux.Services
                 var TokenAuth = headers.GetValues("TokenAuth");
                 DescripToken descripToken = new DescripToken();
                 var dataUser = descripToken.GetPrincipalFromToken(TokenAuth.ToString() ?? string.Empty);
-                var email = dataUser.Identity?.Name;
-                var role = dataUser.FindFirst(ClaimTypes.Role)?.ToString();
+                string email = dataUser.Identity?.Name ?? throw new ArgumentNullException("Cadê seu Email, viado?");
+                string role = dataUser.FindFirst(ClaimTypes.Role)?.ToString() ?? throw new ArgumentNullException("sim, calabreso, qual seu cargo?!");
+                
                 var result = response.Content.ReadAsStringAsync().Result;
                 if (response.IsSuccessStatusCode) return true;
                 else

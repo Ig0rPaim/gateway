@@ -9,18 +9,21 @@ namespace FrontBuilderAux.Controllers
     public class LoginController : Controller
     {
         private readonly IBuilderAuxGateWayService _gateWay;
-        public LoginController(IBuilderAuxGateWayService gateWay)
+        private readonly HttpContext _httpContext;
+        public LoginController(IBuilderAuxGateWayService gateWay, HttpContext httpContext)
         {
             _gateWay = gateWay ?? throw new ArgumentNullException(nameof(gateWay));
+            _httpContext = httpContext ?? throw new ArgumentNullException();
+
         }
         public IActionResult Index()
         {
-			try
-			{
+            try
+            {
                 return View();
             }
-			catch (Exception er)
-			{
+            catch (Exception er)
+            {
                 TempData["MensagemErro"] = $"opa! Deu merda, hein: {er.Message}";
                 return RedirectToAction("Index");
 
@@ -36,7 +39,7 @@ namespace FrontBuilderAux.Controllers
                 {
                     bool result = await _gateWay.Login(user);
                     if (result) { return RedirectToAction("Index", "Home"); }
-                    
+
                 }
                 TempData["MensagemErro"] = $"Usário e/ou senha invalido(s). Tente novamente.";
                 return View("Index");
@@ -49,6 +52,10 @@ namespace FrontBuilderAux.Controllers
             }
         }
 
+
+
+      
+    
 
 
     }
