@@ -8,7 +8,7 @@ namespace BuilderAux.Repository.Usuarios
     {
         public Task<Dictionary<string, string>> GetAsync();
         public Task<Dictionary<string, string>> GetByEmailAsync(string email);
-        public Task<UsuariosVO> PostAsync(UsuariosVO user);
+        public Task<string> PostAsync(UsuariosVO user);
         public Task PutAsync(string email, UsuariosVO user);
         public Task<bool> DeleteAsync(string email);
         public Task MudarSenha(string novaSenha, string email);

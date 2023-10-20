@@ -2,6 +2,7 @@
   "ExpandedNodes": [
     "",
     "\\BuilderAux",
+    "\\BuilderAux\\Controllers",
     "\\BuilderAux\\SevicesGateWay",
     "\\BuilderAux\\SevicesGateWay\\Mail",
     "\\BuilderAux\\VOs",
@@ -11,6 +12,6 @@
     "\\FrontBuilderAux\\Views",
     "\\FrontBuilderAux\\Views\\CreateAccount"
   ],
-  "SelectedNode": "\\BuilderAux\\Program.cs",
+  "SelectedNode": "\\BuilderAux\\Controllers\\UsuarioController.cs",
   "PreviewInSolutionExplorer": false
 }

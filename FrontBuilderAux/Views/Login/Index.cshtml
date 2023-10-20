@@ -27,8 +27,8 @@
 @if (TempData["MensagemErro"] != null)
 {
     
-    <div class="alert alert-danger" role="alert">
-        <button type="button" class="btn btn-danger btn-sm close alert" data-bs-dimiss="alert" aria-label="Close">X</button>
+    <div class="alert alert-danger" role="alert" id="divErro">
+        <button type="button" class="btn btn-danger btn-sm close alert" data-bs-dimiss="alert" aria-label="Close" id="erro">X</button>
         @TempData["MensagemErro"]
     </div>
 }
@@ -130,6 +130,10 @@
 
         $(document).ready(function () {
             ocultarDiv("#sucesso", "#divSucesso");
+        });
+        
+        $(document).ready(function () {
+            ocultarDiv("#erro", "#divErro");
         });
     </script>
 

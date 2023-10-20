@@ -1,6 +1,8 @@
 ﻿using FrontBuilderAux.DTOs;
 using FrontBuilderAux.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+
 
 namespace FrontBuilderAux.Controllers
 {
@@ -46,5 +48,8 @@ namespace FrontBuilderAux.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+
+
     }
 }

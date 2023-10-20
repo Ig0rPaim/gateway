@@ -89,3 +89,6 @@ C:\Users\ioliveira\Documents\C#2\BA\gateway\BuilderAux\bin\Debug\net7.0\Microsof
 C:\Users\ioliveira\Documents\C#2\BA\gateway\BuilderAux\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
 C:\Users\ioliveira\Documents\C#2\BA\gateway\BuilderAux\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\ioliveira\Documents\C#2\BA\gateway\BuilderAux\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\ioliveira\Documents\C#2\BA\gateway\BuilderAux\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\ioliveira\Documents\C#2\BA\gateway\BuilderAux\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\ioliveira\Documents\C#2\BA\gateway\BuilderAux\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll

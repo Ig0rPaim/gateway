@@ -163,7 +163,7 @@ namespace BuilderAux.Repository.Usuarios
             }
         }
 
-        public async Task<UsuariosVO> PostAsync(UsuariosVO user) // passivel de não retornar nada ou um bool
+        public async Task<string> PostAsync(UsuariosVO user) // passivel de não retornar nada ou um bool
         {
             #region init
             SqlCommand cmd = new SqlCommand();
@@ -225,7 +225,7 @@ namespace BuilderAux.Repository.Usuarios
                         "google.com"
                         );
                     #endregion
-                    return await Task.FromResult(user);
+                    return await Task.FromResult(senhaRetorno);
                 }
                 catch (SqlException er)
                 {

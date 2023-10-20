@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
 
+
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BuilderAux.Controllers
@@ -14,9 +15,11 @@ namespace BuilderAux.Controllers
     public class UsuarioController : ControllerBase
     {
         private IUsuariosRepository _usuariosRepository;
-        public UsuarioController(IUsuariosRepository usuariosRepository)
+        private readonly IHttpContextAccessor _httpContext;
+        public UsuarioController(IUsuariosRepository usuariosRepository, IHttpContextAccessor httpContext)
         {
             _usuariosRepository = usuariosRepository;
+            _httpContext = httpContext;
         }
 
         [HttpGet]
@@ -62,13 +65,13 @@ namespace BuilderAux.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult> PostAsync([FromBody] UsuariosVO value)
         {
             try
             {
                 string userName = User.Identity.Name ?? string.Empty;
-                UsuariosVO retorno = await _usuariosRepository.PostAsync(value);
+                string retorno = await _usuariosRepository.PostAsync(value);
 
                 return Ok(retorno);
             }
@@ -165,7 +168,18 @@ namespace BuilderAux.Controllers
             {
                 string userName = User.Identity.Name ?? string.Empty;
                 string result = await _usuariosRepository.Login(value);
-                if (!string.IsNullOrEmpty(result)) return Ok(result);
+                if (!string.IsNullOrEmpty(result)) 
+                { 
+                    HttpResponse response = _httpContext.HttpContext.Response;
+                    response.Headers.Add("TokenAuth", result);
+
+                    ContentResult contentResult = new ContentResult
+                    {
+                        Content = Ok().ToString(),
+                        StatusCode = 200
+                    };
+                    return contentResult;
+                }
                 else return BadRequest("Usuario não encontrado");
             }
             catch (SqlException ex)

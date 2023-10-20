@@ -1,7 +1,8 @@
 ﻿using FrontBuilderAux.DTOs;
 using FrontBuilderAux.Models;
+using FrontBuilderAux.Services.Token;
 using FrontBuilderAux.Utils;
-using System.Runtime.CompilerServices;
+using System.Security.Claims;
 
 namespace FrontBuilderAux.Services
 {
@@ -45,7 +46,9 @@ namespace FrontBuilderAux.Services
         public async Task<bool> PostAsync(UsuariosCreateAccount user)
         {
             var response = await _httpClient.PostAsJson(user, BasePath);
+            var result = response.Content.ReadAsStringAsync().Result;
             if (response.IsSuccessStatusCode) return true;
+            if (response.ReasonPhrase != null) throw new Exception(result);
             throw new Exception("fudeu!");
         }
 
@@ -63,11 +66,16 @@ namespace FrontBuilderAux.Services
             try
             {
                 var response = await _httpClient.PostAsJson(user, BasePathToLogin);
+                var headers = response.Headers;
+                var TokenAuth = headers.GetValues("TokenAuth");
+                DescripToken descripToken = new DescripToken();
+                var dataUser = descripToken.GetPrincipalFromToken(TokenAuth.ToString() ?? string.Empty);
+                var email = dataUser.Identity?.Name;
+                var role = dataUser.FindFirst(ClaimTypes.Role)?.ToString();
+                var result = response.Content.ReadAsStringAsync().Result;
                 if (response.IsSuccessStatusCode) return true;
                 else
                 {
-                    var responseString = response.Content.ReadAsStringAsync();
-                    var result = responseString.Result;
                     throw new Exception(result);
                 }
             }
