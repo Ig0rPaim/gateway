@@ -167,20 +167,32 @@ namespace BuilderAux.Controllers
             try
             {
                 string userName = User.Identity.Name ?? string.Empty;
-                string result = await _usuariosRepository.Login(value);
-                if (!string.IsNullOrEmpty(result)) 
-                { 
-                    HttpResponse response = _httpContext.HttpContext.Response;
-                    response.Headers.Add("TokenAuth", result);
+                Dictionary<string, string> result = await _usuariosRepository.Login(value);
+               
+                HttpResponse response = HttpContext.Response; // HttpResponse response = HttpContext.Response;
+                //HttpContext.Session.
+                string token = result["Token"];
+                string Email = value.email;
+                string senha = value.Senha;
+                string role = result["role"];
+                string telefone = result["Telefone"];
 
-                    ContentResult contentResult = new ContentResult
-                    {
-                        Content = Ok().ToString(),
-                        StatusCode = 200
-                    };
-                    return contentResult;
-                }
-                else return BadRequest("Usuario não encontrado");
+                response.Headers.Add("TokenAuth", token);
+                response.Headers.Add("Email", Email);
+                response.Headers.Add("Senha", senha);
+                response.Headers.Add("Role", role);
+                response.Headers.Add("Telefone", telefone);
+
+                ContentResult contentResult = new ContentResult
+                {
+                    Content = "Ok",
+                    StatusCode = 200
+                };
+                List<string> dataUser = new List<string>(result.Values);
+                string datas = string.Join(",", dataUser);
+                HttpContext.Session.SetString("UserData", datas);
+                return contentResult;
+                
             }
             catch (SqlException ex)
             {

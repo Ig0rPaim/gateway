@@ -7,7 +7,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<IBuilderAuxGateWayService, BuilderAuxGateWayService>(c =>
     c.BaseAddress = new Uri(builder.Configuration["ServicesUrls:GateWayAPI"])
     );
-
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<IBuilderAuxGateWayService, BuilderAuxGateWayService>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {

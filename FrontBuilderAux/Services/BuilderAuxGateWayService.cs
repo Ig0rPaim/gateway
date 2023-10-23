@@ -9,12 +9,16 @@ namespace FrontBuilderAux.Services
     public class BuilderAuxGateWayService : IBuilderAuxGateWayService
     {
         private readonly HttpClient _httpClient;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private const string basePath = "https://localhost:7148/";
         private const string BasePath = "api/Usuario";
         private const string BasePathToLogin = "api/Usuario/Login";
 
-        public BuilderAuxGateWayService(HttpClient httpClient)
+        public BuilderAuxGateWayService(HttpClient httpClient, IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+            //_httpContext = httpContext;
+            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException();
         }
 
         public async Task<bool> DeleteAsync(string email)
@@ -61,18 +65,35 @@ namespace FrontBuilderAux.Services
                 new Exception("fudeu!");
         }
 
-        public async Task<bool> Login(UsuariosLogin user)
+        public async Task<bool> Login(UsuariosLogin user, HttpContext context)
          {
             try
             {
-                var response = await _httpClient.PostAsJson(user, BasePathToLogin);
+                var response = await _httpClient.PostAsJson(user, "https://localhost:7148/api/Usuario/Login");
                 var headers = response.Headers;
                 var TokenAuth = headers.GetValues("TokenAuth");
-                DescripToken descripToken = new DescripToken();
-                var dataUser = descripToken.GetPrincipalFromToken(TokenAuth.ToString() ?? string.Empty);
-                string email = dataUser.Identity?.Name ?? throw new ArgumentNullException("Cadê seu Email, viado?");
-                string role = dataUser.FindFirst(ClaimTypes.Role)?.ToString() ?? throw new ArgumentNullException("sim, calabreso, qual seu cargo?!");
-                
+                var emailSession = headers.GetValues("Email");
+                var senhaSession = headers.GetValues("Senha");
+                var roleSession = headers.GetValues("Role");
+                var telefoneSession = headers.GetValues("Telefone");
+                string Auth = string
+                    .Concat(
+                    emailSession.FirstOrDefault(), ", ",
+                    senhaSession.FirstOrDefault(), ", ",
+                    roleSession.FirstOrDefault(), ", ",
+                    telefoneSession.FirstOrDefault(), ", ",
+                    TokenAuth.FirstOrDefault(), ", "
+                    );
+
+                //DescripToken descripToken = new DescripToken();
+                //var dataUser = descripToken.GetPrincipalFromToken(TokenAuth.FirstOrDefault() ?? throw new ArgumentNullException());
+                ////dataUser.FindAll();
+                //string email = dataUser.Identity?.Name ?? throw new ArgumentNullException("Cadê seu Email, viado?");
+                //string role = dataUser.FindFirst(ClaimTypes.Role)?.ToString() ?? throw new ArgumentNullException("sim, calabreso, qual seu cargo?!");
+                //List<string> dataSession = new List<string> { email, role};
+                //string datas = string.Join(", ", dataSession);
+                //_httpContext.Session.SetString("DataUser", datas);
+                context.Session.SetString("DataUser", Auth);
                 var result = response.Content.ReadAsStringAsync().Result;
                 if (response.IsSuccessStatusCode) return true;
                 else

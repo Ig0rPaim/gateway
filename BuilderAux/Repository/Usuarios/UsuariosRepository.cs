@@ -422,7 +422,7 @@ namespace BuilderAux.Repository.Usuarios
             }
         }
 
-        public async Task<string> Login(Login userLogin)
+        public async Task<Dictionary<string, string>> Login(Login userLogin)
         {
             #region init
             SqlCommand cmd = new SqlCommand();
@@ -431,6 +431,7 @@ namespace BuilderAux.Repository.Usuarios
             byte[] pass;
             TokenService generateToken = new TokenService();
             string connectionString = StringConnection.GetString();
+            Dictionary<string, string> retorno = new Dictionary<string, string>();
             #endregion
             using(SqlConnection cn = new SqlConnection(connectionString))
             {
@@ -461,8 +462,13 @@ namespace BuilderAux.Repository.Usuarios
                         reader["Telefone"].ToString() ?? string.Empty,
                         reader["Cargo"].ToString() ?? string.Empty
                     );
-                    if (pass.SequenceEqual(passUser)) { return generateToken.Generate(userToken); }
-                    return string.Empty;
+                    retorno.Add("Token", generateToken.Generate(userToken));
+                    retorno.Add("Nome", userToken.Name);
+                    retorno.Add("Telefone", userToken.Telefone);
+                    retorno.Add("role", userToken.Role);
+
+                    if (pass.SequenceEqual(passUser)) { return retorno; }
+                    throw new Exception("a senha está incorreta");
                 }
                 catch (SqlException er)
                 {

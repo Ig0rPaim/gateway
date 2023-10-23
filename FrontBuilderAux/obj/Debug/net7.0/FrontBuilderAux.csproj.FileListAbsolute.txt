@@ -60,3 +60,10 @@ C:\Users\ioliveira\Documents\C#2\BA\gateway\FrontBuilderAux\obj\Debug\net7.0\ref
 C:\Users\ioliveira\Documents\C#2\BA\gateway\FrontBuilderAux\obj\Debug\net7.0\FrontBuilderAux.pdb
 C:\Users\ioliveira\Documents\C#2\BA\gateway\FrontBuilderAux\obj\Debug\net7.0\FrontBuilderAux.genruntimeconfig.cache
 C:\Users\ioliveira\Documents\C#2\BA\gateway\FrontBuilderAux\obj\Debug\net7.0\ref\FrontBuilderAux.dll
+C:\Users\ioliveira\Documents\C#2\BA\gateway\FrontBuilderAux\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\ioliveira\Documents\C#2\BA\gateway\FrontBuilderAux\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\ioliveira\Documents\C#2\BA\gateway\FrontBuilderAux\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\ioliveira\Documents\C#2\BA\gateway\FrontBuilderAux\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\ioliveira\Documents\C#2\BA\gateway\FrontBuilderAux\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\ioliveira\Documents\C#2\BA\gateway\FrontBuilderAux\bin\Debug\net7.0\System.Security.Permissions.dll
+C:\Users\ioliveira\Documents\C#2\BA\gateway\FrontBuilderAux\obj\Debug\net7.0\FrontBuilderAux.csproj.CopyComplete

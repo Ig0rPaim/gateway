@@ -37,6 +37,16 @@ builder.Services
         };
     });
 
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = ".AdventureWorks.Session";
+    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.Cookie.IsEssential = true;
+});
+
+
 
 //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
@@ -58,6 +68,7 @@ builder.Services.AddHttpContextAccessor(); // para usar o http context
 var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSession();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

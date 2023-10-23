@@ -16,6 +16,8 @@ namespace FrontBuilderAux.Controllers
 
         public IActionResult Index()
         {
+            var dataUser = TempData["DataUser"] as string;
+            ViewBag.DataUser = dataUser;
             return View();
         }
 

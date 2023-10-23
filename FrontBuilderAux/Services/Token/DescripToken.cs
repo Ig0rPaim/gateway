@@ -21,8 +21,9 @@ namespace FrontBuilderAux.Services.Token
         public ClaimsPrincipal GetPrincipalFromToken(string token)
         {
             if (string.IsNullOrEmpty(token)) { throw new ArgumentNullException("token"); }
+            var builder = WebApplication.CreateBuilder();
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration.GetSection("Keys").GetSection("TokenKey").Value ?? string.Empty);
+            var key = Encoding.ASCII.GetBytes(builder.Configuration.GetSection("Keys").GetSection("TokenKey").Value ?? string.Empty);
 
             var tokenValidationParameters = new TokenValidationParameters
             {

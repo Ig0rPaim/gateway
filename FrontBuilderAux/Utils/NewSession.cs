@@ -1,23 +1,24 @@
 ﻿
 
 
-namespace FrontBuilderAux.Utils
-{
-    public static class NewSession
-    {
-        private static readonly HttpContext _httpContext;
+//namespace FrontBuilderAux.Utils
+//{
+//    public static class NewSession
+//    {
+//        private static readonly HttpClient? _httpContext;
 
-        private static void Salvar(this HttpContext _httpContext)
-        {
-            try
-            {
-                _httpContext.Session.SetString("DataUser", "qualquer coisa");
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
+//        public static void Salvar(List<string> dataSessions)
+//        {
+//            try
+//            {
+//                string dados = string.Join(" ", dataSessions);
+//                _httpContext.Session.SetString("DataUser", dados);
+//            }
+//            catch (Exception ex)
+//            {
+//                throw new Exception(ex.Message);
+//            }
+//        }
 
-    }
-}
+//    }
+//}
