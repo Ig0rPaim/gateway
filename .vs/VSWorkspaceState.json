@@ -2,16 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\BuilderAux",
-    "\\BuilderAux\\SevicesGateWay",
-    "\\BuilderAux\\SevicesGateWay\\Mail",
     "\\BuilderAux\\VOs",
     "\\FrontBuilderAux",
     "\\FrontBuilderAux\\Controllers",
     "\\FrontBuilderAux\\Services",
     "\\FrontBuilderAux\\Utils",
     "\\FrontBuilderAux\\Views",
-    "\\FrontBuilderAux\\Views\\CreateAccount"
+    "\\FrontBuilderAux\\Views\\CreateAccount",
+    "\\FrontBuilderAux\\Views\\Home"
   ],
-  "SelectedNode": "\\FrontBuilderAux\\Utils\\NewSession.cs",
+  "SelectedNode": "\\FrontBuilderAux\\Views\\Home\\Index.cshtml",
   "PreviewInSolutionExplorer": false
 }

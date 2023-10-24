@@ -43,7 +43,7 @@ namespace FrontBuilderAux.Controllers
                     {
                         // Armazene os dados de sessão em TempData
                         TempData["DataUser"] = HttpContext.Session.GetString("DataUser");
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Home", TempData["DataUser"]);
                     }
 
 
