@@ -1,4 +1,5 @@
-﻿using AutheticationServer.Models;
+﻿using AutheticationServer.DTOs;
+using AutheticationServer.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -8,7 +9,6 @@ namespace AutheticationServer.Services
 {
     public class TokenServices : ITokenServices
     {
-        private TokenModel _tokenconfiguration;
         private JwtSecurityTokenHandler _tokenhandler;
         private byte[] _key;
         private WebApplicationBuilder _builder;
@@ -16,7 +16,6 @@ namespace AutheticationServer.Services
 
         public TokenServices()
         {
-            _tokenconfiguration = new TokenModel();
             _tokenhandler = new JwtSecurityTokenHandler();
             _builder =  WebApplication.CreateBuilder();
             _key = Encoding.ASCII.GetBytes(_builder
@@ -27,7 +26,7 @@ namespace AutheticationServer.Services
 
         }
 
-        public async Task<object> CreateToken(UsuarioModel acesso)
+        public async Task<ResultCreate> CreateToken(UsuarioModel acesso, string code)
         {
             try
             {
@@ -35,21 +34,33 @@ namespace AutheticationServer.Services
                 ClaimsIdentity identity = new ClaimsIdentity(new Claim[] {
                         new Claim("Email", acesso.Email),
                         new Claim("Role", acesso.Role),
-                        new Claim("Expires", acesso.Expires)
-                });
+                        new Claim("Expires", acesso.Expires),
+                        new Claim("Aplication", acesso.Aplication)
+                }); ;
                 #endregion
 
                 #region Datas de criação e expiração
-                DateTime createdDate = DateTime.Now;
+                DateTime createdDate = DateTime.UtcNow;
                 DateTime expiresDate = createdDate +
                     TimeSpan.FromMinutes(Convert.ToInt32(acesso.Expires));
                 #endregion
 
                 #region Criação do token
+                #region builder
+                var builder = WebApplication.CreateBuilder();
+                TokenModel tokenModel = new TokenModel
+                {
+                    Audience = code,
+                    Issuer = builder.Configuration
+                    .GetSection("Jwt")
+                    .GetSection("Issuer")
+                    .ToString() ?? string.Empty
+                };
+                #endregion
                 var securityToken = _tokenhandler.CreateToken(new SecurityTokenDescriptor
                 {
-                    Issuer = _tokenconfiguration.Issuer,
-                    Audience = _tokenconfiguration.Audience,
+                    Issuer = tokenModel.Issuer,
+                    Audience = tokenModel.Audience,
                     SigningCredentials = SymetricSecurityKey(),
                     Subject = identity,
                     NotBefore = createdDate,
@@ -60,7 +71,7 @@ namespace AutheticationServer.Services
                 var token = _tokenhandler.WriteToken(securityToken);
 
                 #region Construindo retorno
-                var result = new
+                ResultCreate result = new ResultCreate
                 {
                     authenticated = true,
                     created = createdDate.ToString("yyyy-MM-dd HH:mm:ss"),
@@ -69,37 +80,46 @@ namespace AutheticationServer.Services
                     message = "OK"
                 };
                 #endregion
-
                 return result;
             }
             catch (Exception ex)
             {
-                var result = new
+                ResultCreate result = new ResultCreate
                 {
                     authenticated = false,
                     message = $"Falha na criação do Token: {ex.Message}"
                 };
-
                 return result;
             }
         }
 
-        public async Task<object> ValidateToken(string token, UsuarioModel acesso)
+        public async Task<ResultValidator> ValidateToken(string token, UsuarioModel acesso, string code)
         {
             try
             {
                 var tokenSecure = _tokenhandler.ReadToken(token) as SecurityToken;
 
                 #region Validation Parameters
+                #region builder
+                var builder = WebApplication.CreateBuilder();
+                TokenModel tokenModel = new TokenModel
+                {
+                    Audience = code,
+                    Issuer = builder.Configuration
+                    .GetSection("Jwt")
+                    .GetSection("Issuer")
+                    .ToString() ?? string.Empty
+                };
+                #endregion
                 var _validationparameters = new TokenValidationParameters();
                 _validationparameters.IssuerSigningKey = _keyIdentity;
-                _validationparameters.ValidAudience = _tokenconfiguration.Audience;
-                _validationparameters.ValidIssuer = _tokenconfiguration.Issuer;
+                _validationparameters.ValidAudience = tokenModel.Audience;
+                _validationparameters.ValidIssuer = tokenModel.Issuer;
                 _validationparameters.ValidateIssuerSigningKey = true;
                 _validationparameters.ValidateLifetime = true;
                 _validationparameters.ClockSkew = TimeSpan.Zero;
                 #endregion
-
+                var teste = DateTime.UtcNow;
                 if (tokenSecure != null && tokenSecure.ValidTo > DateTime.UtcNow)
                 {
                     var claims = _tokenhandler.ValidateToken(token, _validationparameters, out tokenSecure);
@@ -112,45 +132,50 @@ namespace AutheticationServer.Services
                     {
                         var validto = tokenSecure.ValidTo.ToLocalTime();
 
-                        var result = new
+                        #region contruindo retorno
+                        ResultValidator result = new ResultValidator
                         {
                             authenticated = true,
                             lifetime = validto.ToString("yyyy-MM-dd HH:mm:ss"),
                             accessToken = token,
                             message = "OK"
                         };
+                        #endregion
                         return result;
                     }
                     else
                     {
-                        var result = new
+                        #region contruindo retorno
+                        ResultValidator result = new ResultValidator
                         {
                             authenticated = false,
                             message = "Token informado não pode ser utilizado para a requisição"
                         };
-
+                        #endregion
                         return result;
                     }
                 }
                 else
                 {
-                    var result = new
+                    #region contruindo retorno
+                    ResultValidator result = new ResultValidator
                     {
                         authenticated = false,
                         message = "Token expirado e não pode ser utilizado"
                     };
-
+                    #endregion
                     return result;
                 }
             }
             catch (Exception ex)
             {
-                var result = new
+                #region contruindo retorno
+                ResultValidator result = new ResultValidator
                 {
                     authenticated = false,
                     message = $"Falha na validação do Token: {ex.Message}"
                 };
-
+                #endregion
                 return result;
             }
         }

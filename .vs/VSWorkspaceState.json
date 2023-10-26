@@ -1,9 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\BuilderAux",
+    "\\AutheticationServer",
     "\\BuilderAux\\Controllers",
-    "\\FrontBuilderAux",
     "\\FrontBuilderAux\\Controllers",
     "\\FrontBuilderAux\\Services",
     "\\FrontBuilderAux\\Utils",
@@ -11,6 +10,6 @@
     "\\FrontBuilderAux\\Views\\CreateAccount",
     "\\FrontBuilderAux\\Views\\Home"
   ],
-  "SelectedNode": "\\BuilderAux\\Controllers\\UsuarioController.cs",
+  "SelectedNode": "\\AutheticationServer\\Extensions",
   "PreviewInSolutionExplorer": false
 }

@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "G93Nz6T+L8N3t0xcO8VB/TxEnJeYjuACd7jm8rdphTc=",
+  "Source": "AutheticationServer",
+  "BasePath": "_content/AutheticationServer",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

@@ -1,52 +1,110 @@
-using AutheticationServer.EndPoints;
+using AutheticationServer.Filters;
+using AutheticationServer.Models;
 using AutheticationServer.Services;
-using AutheticationServer.Services.HttpContext;
+using AutheticationServer.Validators;
+using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
-//builder.Services.AddControllersWithViews();
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddTransient<InjectionHttpContext>();
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IValidator<UsuarioModel>, UsuariosValidator>();
+builder.Services.AddScoped<ITokenServices, TokenServices>();
+
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+
+app.MapPost("token/gerar", async (HttpContext context,
+    [FromHeader (Name = "Code")] string Code,
+    [FromBody] UsuarioModel user) =>
+{
+	try
+	{
+        ITokenServices tokenServices = new TokenServices();
+        var token = await tokenServices.CreateToken(user, Code);
+
+        HttpResponse response = context.Response;
+        #region contruindo response
+        response.Headers.Add("authenticated", token.authenticated.ToString());
+        response.Headers.Add("TokenAuth", token.accessToken);
+        response.Headers.Add("created", token.created);
+        response.Headers.Add("expiration", token.expiration);
+        response.StatusCode = 201;
+        response.ContentType = "text/plain";
+        await response.WriteAsync("Token Criado com sucesso");
+        #endregion
+    }
+	catch (Exception er)
+	{
+        throw new Exception(er.Message);
+	}
+
+})
+    .AddEndpointFilter<ValidationFilter<UsuarioModel>>();
+
+
+app.MapPost("token/validar", async (HttpContext context, 
+    [FromHeader(Name = "TokenAuth")] string token,
+    [FromHeader(Name = "Code")] string Code,
+    [FromBody] UsuarioModel user) =>
+{
+    try
+    {
+        ITokenServices tokenServices = new TokenServices();
+        var retorno = await tokenServices.ValidateToken(token, user, Code);
+        HttpResponse response = context.Response;
+
+        if (retorno.authenticated)
+        {
+            #region contruindo response
+            response.Headers.Add("authenticated", retorno.authenticated.ToString());
+            response.Headers.Add("lifetime", retorno.lifetime);
+            response.Headers.Add("accessToken", retorno.accessToken);
+            response.StatusCode = 200;
+            response.ContentType = "text/plain";
+            await response.WriteAsync("Token validado");
+            #endregion
+        }
+        else if (retorno.message == "Token informado não pode ser utilizado para a requisição")
+        {
+            #region contruindo response
+            response.Headers.Add("authenticated", retorno.authenticated.ToString());
+            response.StatusCode = 401;
+            response.ContentType = "text/plain";
+            await response.WriteAsync(retorno.message);
+            #endregion
+        }
+        else if (retorno.message == "Token expirado e não pode ser utilizado")
+        {
+            #region construindo response
+            response.Headers.Add("authenticated", retorno.authenticated.ToString());
+            response.StatusCode = 400;
+            response.ContentType = "text/plain";
+            await response.WriteAsync(retorno.message);
+            #endregion
+        }
+        else 
+        {
+            response.StatusCode = 400;
+            response.ContentType = "text/plain"; 
+            await response.WriteAsync("O token não pode ser validado"); 
+        }
+
+    }
+    catch (Exception er)
+    {
+        throw new Exception(er.Message);
+    }
+})
+    .AddEndpointFilter<ValidationFilter<UsuarioModel>>();
+
 app.UseHttpsRedirection();
 
-app.MapPost("token/gerar", TokenServices.CreateToken())
-
-//var summaries = new[]
-//{
-//    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-//};
-
-//app.MapGet("/weatherforecast", () =>
-//{
-//    var forecast = Enumerable.Range(1, 5).Select(index =>
-//        new WeatherForecast
-//        (
-//            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-//            Random.Shared.Next(-20, 55),
-//            summaries[Random.Shared.Next(summaries.Length)]
-//        ))
-//        .ToArray();
-//    return forecast;
-//})
-//.WithName("GetWeatherForecast")
-//.WithOpenApi();
-
 app.Run();
-
-//internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-//{
-//    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-//}
