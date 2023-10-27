@@ -1,4 +1,5 @@
-﻿using AutheticationServer.DTOs;
+﻿using AutheticationServer.Criptografia;
+using AutheticationServer.DTOs;
 using AutheticationServer.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -30,6 +31,18 @@ namespace AutheticationServer.Services
         {
             try
             {
+                #region validação do clinte
+                byte[] codeByte = Convert.FromBase64String(code);//ASCII.GetBytes(code);
+                //Asymmetrical asymmetrical = new Asymmetrical();
+                byte[] descrypCode = Asymmetrical.Descriptografar(codeByte);
+                string stringCode = Convert.ToBase64String(descrypCode);
+                string codeApplication = _builder
+                    .Configuration.GetSection("Keys")
+                    .GetSection("CodeBuilderAux")
+                    .Value ?? throw new ArgumentNullException();
+                if (stringCode != codeApplication) { throw new Exception("Cliente não Autorizado"); }
+                #endregion
+
                 #region Preechendo Claims
                 ClaimsIdentity identity = new ClaimsIdentity(new Claim[] {
                         new Claim("Email", acesso.Email),
@@ -97,6 +110,18 @@ namespace AutheticationServer.Services
         {
             try
             {
+                #region validação do clinte
+                byte[] codeByte = Encoding.ASCII.GetBytes(code);
+                //Asymmetrical asymmetrical = new Asymmetrical();
+                byte[] descrypCode = Asymmetrical.Descriptografar(codeByte);
+                string stringCode = Convert.ToBase64String(descrypCode);
+                string codeApplication = _builder
+                    .Configuration.GetSection("Keys")
+                    .GetSection("CodeBuilderAux")
+                    .ToString() ?? throw new ArgumentNullException();
+                if (stringCode != codeApplication) { throw new Exception("Cliente não Autorizado"); }
+                #endregion
+
                 var tokenSecure = _tokenhandler.ReadToken(token) as SecurityToken;
 
                 #region Validation Parameters
@@ -194,6 +219,13 @@ namespace AutheticationServer.Services
                 throw new Exception(er.Message);
             }
         }
+
+        public bool sla()
+        {
+            return Asymmetrical.teste();
+        }
+
+
     }
 
  }

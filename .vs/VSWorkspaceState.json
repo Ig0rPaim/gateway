@@ -2,14 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\AutheticationServer",
-    "\\BuilderAux\\Controllers",
-    "\\FrontBuilderAux\\Controllers",
-    "\\FrontBuilderAux\\Services",
-    "\\FrontBuilderAux\\Utils",
-    "\\FrontBuilderAux\\Views",
-    "\\FrontBuilderAux\\Views\\CreateAccount",
-    "\\FrontBuilderAux\\Views\\Home"
+    "\\AutheticationServer\\Criptografia"
   ],
-  "SelectedNode": "\\AutheticationServer\\Extensions",
+  "SelectedNode": "\\AuxBuilder.sln",
   "PreviewInSolutionExplorer": false
 }

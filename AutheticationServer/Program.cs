@@ -4,6 +4,8 @@ using AutheticationServer.Services;
 using AutheticationServer.Validators;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using AutheticationServer.Criptografia;
+using System.Security.Cryptography;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
@@ -28,18 +30,26 @@ app.MapPost("token/gerar", async (HttpContext context,
 	try
 	{
         ITokenServices tokenServices = new TokenServices();
-        var token = await tokenServices.CreateToken(user, Code);
-
         HttpResponse response = context.Response;
-        #region contruindo response
-        response.Headers.Add("authenticated", token.authenticated.ToString());
-        response.Headers.Add("TokenAuth", token.accessToken);
-        response.Headers.Add("created", token.created);
-        response.Headers.Add("expiration", token.expiration);
-        response.StatusCode = 201;
-        response.ContentType = "text/plain";
-        await response.WriteAsync("Token Criado com sucesso");
-        #endregion
+        var token = await tokenServices.CreateToken(user, Code);
+        if (token.authenticated)
+        {
+            #region contruindo response
+            response.Headers.Add("authenticated", token.authenticated.ToString());
+            response.Headers.Add("TokenAuth", token.accessToken);
+            response.Headers.Add("created", token.created);
+            response.Headers.Add("expiration", token.expiration);
+            response.StatusCode = 201;
+            response.ContentType = "text/plain";
+            await response.WriteAsync("Token Criado com sucesso");
+            #endregion
+        }
+        else
+        {
+            response.StatusCode = 400;
+            response.ContentType = "text/plain";
+            await response.WriteAsync("Cliente não cadastrado");
+        }
     }
 	catch (Exception er)
 	{
@@ -50,7 +60,7 @@ app.MapPost("token/gerar", async (HttpContext context,
     .AddEndpointFilter<ValidationFilter<UsuarioModel>>();
 
 
-app.MapPost("token/validar", async (HttpContext context, 
+app.MapPost("token/validar", async (HttpContext context,
     [FromHeader(Name = "TokenAuth")] string token,
     [FromHeader(Name = "Code")] string Code,
     [FromBody] UsuarioModel user) =>
@@ -90,11 +100,11 @@ app.MapPost("token/validar", async (HttpContext context,
             await response.WriteAsync(retorno.message);
             #endregion
         }
-        else 
+        else
         {
             response.StatusCode = 400;
-            response.ContentType = "text/plain"; 
-            await response.WriteAsync("O token não pode ser validado"); 
+            response.ContentType = "text/plain";
+            await response.WriteAsync("O token não pode ser validado");
         }
 
     }
@@ -104,6 +114,12 @@ app.MapPost("token/validar", async (HttpContext context,
     }
 })
     .AddEndpointFilter<ValidationFilter<UsuarioModel>>();
+
+app.MapPost("/CriarChaves", () =>
+{
+    ITokenServices services = new TokenServices();
+    services.sla();
+});
 
 app.UseHttpsRedirection();
 
