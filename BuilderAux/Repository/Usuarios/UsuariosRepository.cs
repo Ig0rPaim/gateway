@@ -8,6 +8,8 @@ using BuilderAux.SevicesGateWay.Mail;
 using BuilderAux.Exceptions;
 using BuilderAux.DTO_s;
 using BuilderAux.SevicesGateWay.Token;
+using BuilderAux.SevicesGateWay.AutheticationServer;
+using BuilderAux.Controllers;
 
 //Em produção
 
@@ -15,6 +17,12 @@ namespace BuilderAux.Repository.Usuarios
 {
     public class UsuariosRepository : IUsuariosRepository
     {
+        //private readonly AuthenticationController _authentication;
+        //public UsuariosRepository(AuthenticationController authentication)
+        //{
+        //    _authentication = authentication ?? throw new ArgumentNullException(nameof(authentication));
+        //}
+
         public async Task<bool> DeleteAsync(string email)
          {
             #region init
@@ -422,7 +430,7 @@ namespace BuilderAux.Repository.Usuarios
             }
         }
 
-        public async Task<Dictionary<string, string>> Login(Login userLogin)
+        public async Task<Dictionary<string, string>> Login(Login userLogin, HttpContext context)
         {
             #region init
             SqlCommand cmd = new SqlCommand();
@@ -442,7 +450,7 @@ namespace BuilderAux.Repository.Usuarios
                 cmd.Transaction = transaction;
                 #endregion
                 user = await FindEmail(userLogin.email);
-                if (user == "") throw new Exceptions.NotFoundException("Usuario não encontrado");
+                if (user == "") throw new NotFoundException("Usuario não encontrado");
                 try
                 {
                     cmd.CommandText = @"SELECT Nome, Telefone, senha, Cargo 
@@ -451,22 +459,31 @@ namespace BuilderAux.Repository.Usuarios
                                       ON Usuarios.Role = RolesUsuarios.Id
                                       WHERE Usuarios.Id = @IdUser;
                                       ";
+
                     cmd.Parameters.Add("@IdUser", SqlDbType.NVarChar).Value = user;
+
                     SqlDataReader reader = cmd.ExecuteReader();
                     _ = reader.Read() ? pass = (byte[])reader["Senha"]
                         ?? throw new ArgumentNullException() 
                         : throw new Exception();
-                    UsuariosVO userToken = new UsuariosVO(
-                        reader["Nome"].ToString() ?? string.Empty,
-                        userLogin.email,
-                        reader["Telefone"].ToString() ?? string.Empty,
-                        reader["Cargo"].ToString() ?? string.Empty
-                    );
-                    retorno.Add("Token", generateToken.Generate(userToken));
-                    retorno.Add("Nome", userToken.Name);
-                    retorno.Add("Telefone", userToken.Telefone);
-                    retorno.Add("role", userToken.Role);
-
+                    Authentication userAuth = new Authentication
+                    {
+                        Email = user,
+                        Role = reader["Cargo"].ToString() ?? string.Empty,
+                        Aplication = "Login",
+                        Expires = "20"
+                    };
+                    AuthenticationController auth = new AuthenticationController();
+                    var auth2 = await auth.CreateToken(userAuth);
+                    #region Construindo Retorno
+                    //retorno.Add("Token", auth.accessToken);
+                    //retorno.Add("Expiration", auth.expiration);
+                    //retorno.Add("Created", auth.created);
+                    //retorno.Add("Email", auth.email);
+                    retorno.Add("Nome", reader["Nome"].ToString() ?? string.Empty);
+                    retorno.Add("Telefone", reader["Telefone"].ToString() ?? string.Empty);
+                    retorno.Add("role", reader["Cargo"].ToString() ?? string.Empty);
+                    #endregion
                     if (pass.SequenceEqual(passUser)) { return retorno; }
                     throw new Exception("a senha está incorreta");
                 }

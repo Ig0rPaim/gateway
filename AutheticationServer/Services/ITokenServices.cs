@@ -7,6 +7,5 @@ namespace AutheticationServer.Services
     {
         public Task<ResultCreate> CreateToken(UsuarioModel acesso, string code);
         public Task<ResultValidator> ValidateToken(string token, UsuarioModel acesso, string code);
-        public bool sla();
     }
 }

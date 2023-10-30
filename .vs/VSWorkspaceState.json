@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\AutheticationServer",
-    "\\AutheticationServer\\Criptografia"
+    "\\AutheticationServer\\Criptografia",
+    "\\AutheticationServer\\TESTE"
   ],
-  "SelectedNode": "\\AuxBuilder.sln",
+  "SelectedNode": "\\AutheticationServer\\TESTE\\testeConsole.cs",
   "PreviewInSolutionExplorer": false
 }

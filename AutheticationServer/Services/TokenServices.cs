@@ -32,8 +32,7 @@ namespace AutheticationServer.Services
             try
             {
                 #region validação do clinte
-                byte[] codeByte = Convert.FromBase64String(code);//ASCII.GetBytes(code);
-                //Asymmetrical asymmetrical = new Asymmetrical();
+                byte[] codeByte = Convert.FromBase64String(code);
                 byte[] descrypCode = Asymmetrical.Descriptografar(codeByte);
                 string stringCode = Convert.ToBase64String(descrypCode);
                 string codeApplication = _builder
@@ -111,14 +110,13 @@ namespace AutheticationServer.Services
             try
             {
                 #region validação do clinte
-                byte[] codeByte = Encoding.ASCII.GetBytes(code);
-                //Asymmetrical asymmetrical = new Asymmetrical();
+                byte[] codeByte = Convert.FromBase64String(code);
                 byte[] descrypCode = Asymmetrical.Descriptografar(codeByte);
                 string stringCode = Convert.ToBase64String(descrypCode);
                 string codeApplication = _builder
                     .Configuration.GetSection("Keys")
                     .GetSection("CodeBuilderAux")
-                    .ToString() ?? throw new ArgumentNullException();
+                    .Value ?? throw new ArgumentNullException();
                 if (stringCode != codeApplication) { throw new Exception("Cliente não Autorizado"); }
                 #endregion
 
@@ -220,10 +218,7 @@ namespace AutheticationServer.Services
             }
         }
 
-        public bool sla()
-        {
-            return Asymmetrical.teste();
-        }
+        
 
 
     }

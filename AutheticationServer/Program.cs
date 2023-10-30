@@ -12,6 +12,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IValidator<UsuarioModel>, UsuariosValidator>();
 builder.Services.AddScoped<ITokenServices, TokenServices>();
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = ".AdventureWorks.Session";
+    options.IdleTimeout = TimeSpan.FromMinutes(1);
+    options.Cookie.IsEssential = true;
+});
 
 
 var app = builder.Build();
@@ -43,12 +51,15 @@ app.MapPost("token/gerar", async (HttpContext context,
             response.ContentType = "text/plain";
             await response.WriteAsync("Token Criado com sucesso");
             #endregion
+            string nameSession = user.Email;
+            string dataUser = $"{user.Role};{user.Aplication};{user.Expires}";
+            context.Session.SetString(nameSession, dataUser);
         }
         else
         {
             response.StatusCode = 400;
             response.ContentType = "text/plain";
-            await response.WriteAsync("Cliente não cadastrado");
+            await response.WriteAsync(token.message);
         }
     }
 	catch (Exception er)
@@ -114,12 +125,6 @@ app.MapPost("token/validar", async (HttpContext context,
     }
 })
     .AddEndpointFilter<ValidationFilter<UsuarioModel>>();
-
-app.MapPost("/CriarChaves", () =>
-{
-    ITokenServices services = new TokenServices();
-    services.sla();
-});
 
 app.UseHttpsRedirection();
 

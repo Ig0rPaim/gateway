@@ -1,5 +1,6 @@
 using BuilderAux.Repository.Roles;
 using BuilderAux.Repository.Usuarios;
+using BuilderAux.SevicesGateWay.AutheticationServer;
 using BuilderAux.SevicesGateWay.Token;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
@@ -42,9 +43,13 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
     options.Cookie.Name = ".AdventureWorks.Session";
-    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.IdleTimeout = TimeSpan.FromSeconds(20);
     options.Cookie.IsEssential = true;
 });
+
+builder.Services.AddHttpClient<IAuthenticationServer, AuthenticationServer>(c =>
+    c.BaseAddress = new Uri(builder.Configuration["ServicesUrls:AuthAPI"] ?? throw new ArgumentNullException("Ops! problemas com a rota!"))
+    );
 
 
 
@@ -63,7 +68,6 @@ builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>();
 builder.Services.AddTransient<TokenService>();
 builder.Services.AddControllers(); // para usar o http context
 builder.Services.AddHttpContextAccessor(); // para usar o http context
-
 
 var app = builder.Build();
 app.UseAuthentication();

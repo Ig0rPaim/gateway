@@ -4,28 +4,22 @@ namespace AutheticationServer.Criptografia
 {
     public static class GenerateKeys
     {
-        private static RSAParameters publicKey;
-        private static RSAParameters privateKey;
-
-        public static string gerarPublic()
+        private static string gerarPublic()
         {
             using RSA rsa = RSA.Create();
-            string Public = Convert.ToBase64String(rsa.ExportRSAPublicKey());
-            return Public;
+            string publicKeyString = rsa.ToXmlString(false);
+            return publicKeyString;
         }
-        public static string gerarPrivate()
+        private static string gerarPrivate()
         {
             using RSA rsa = RSA.Create();
-            string Private = Convert.ToBase64String(rsa.ExportRSAPrivateKey());
-            return Private;
+            string privateKeyString = rsa.ToXmlString(true);
+            return privateKeyString;
         }
 
         public static Dictionary<string, string> GetKeys()
         {
             using RSA rsa = RSA.Create();
-
-            publicKey = rsa.ExportParameters(false);
-            privateKey = rsa.ExportParameters(true);
             string Private = gerarPrivate(); 
             string Public = gerarPublic(); 
             return new Dictionary<string, string> { 
@@ -52,7 +46,6 @@ namespace AutheticationServer.Criptografia
             string conteudoPrivate = keys["PrivatecKey"];
             File.WriteAllText(caminhoPublic, conteudoPublic);
             File.WriteAllText(caminhoPrivate, conteudoPrivate);
-
         }
     }
 }

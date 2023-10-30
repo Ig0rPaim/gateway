@@ -12,6 +12,6 @@ namespace BuilderAux.Repository.Usuarios
         public Task PutAsync(string email, UsuariosVO user);
         public Task<bool> DeleteAsync(string email);
         public Task MudarSenha(string novaSenha, string email);
-        public Task<Dictionary<string, string>> Login(Login userLogin);
+        public Task<Dictionary<string, string>> Login(Login userLogin, HttpContext context);
     }
 }

@@ -166,12 +166,14 @@ namespace BuilderAux.Controllers
         {
             try
             {
-                string userName = User.Identity.Name ?? string.Empty;
-                Dictionary<string, string> result = await _usuariosRepository.Login(value);
+                //string userName = User.Identity.Name ?? string.Empty;
+                Dictionary<string, string> result = await _usuariosRepository.Login(value, HttpContext);
                
                 HttpResponse response = HttpContext.Response; // HttpResponse response = HttpContext.Response;
                 //HttpContext.Session.
                 string token = result["Token"];
+                string expiration = result["Expiration"];
+                string created = result["Created"];
                 string Email = value.email;
                 string senha = value.Senha;
                 string role = result["role"];
@@ -182,15 +184,18 @@ namespace BuilderAux.Controllers
                 response.Headers.Add("Senha", senha);
                 response.Headers.Add("Role", role);
                 response.Headers.Add("Telefone", telefone);
+                response.Headers.Add("Expiration", expiration);
+                response.Headers.Add("Created", created);
 
                 ContentResult contentResult = new ContentResult
                 {
                     Content = "Ok",
                     StatusCode = 200
                 };
-                List<string> dataUser = new List<string>(result.Values);
-                string datas = string.Join(",", dataUser);
-                HttpContext.Session.SetString("UserData", datas);
+                //List<string> dataUser = new List<string>(result.Values);
+                //string datas = string.Join(",", dataUser);
+                //string nomeUser = Email;
+                //HttpContext.Session.SetString(nomeUser, datas);
                 return contentResult;
                 
             }
