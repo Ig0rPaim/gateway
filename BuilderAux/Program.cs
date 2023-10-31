@@ -65,6 +65,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRolesRepository, RolesRepository>();
 builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>();
+builder.Services.AddScoped<AuthenticationServer>();
 builder.Services.AddTransient<TokenService>();
 builder.Services.AddControllers(); // para usar o http context
 builder.Services.AddHttpContextAccessor(); // para usar o http context

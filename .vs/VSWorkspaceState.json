@@ -3,8 +3,10 @@
     "",
     "\\AutheticationServer",
     "\\AutheticationServer\\Criptografia",
-    "\\AutheticationServer\\TESTE"
+    "\\AutheticationServer\\TESTE",
+    "\\BuilderAux",
+    "\\BuilderAux\\Controllers"
   ],
-  "SelectedNode": "\\AutheticationServer\\TESTE\\testeConsole.cs",
+  "SelectedNode": "\\BuilderAux\\Controllers\\UsuarioController.cs",
   "PreviewInSolutionExplorer": false
 }

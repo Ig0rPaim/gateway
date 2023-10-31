@@ -94,6 +94,7 @@
             string token = "BUILDEAUXGATEWAY";
             byte[] data = Convert.FromBase64String(token);
             Console.WriteLine($"{Convert.ToBase64String(Criptografar(data))}");
+            //"h2m/p6Ca4x9UWru3ug8vDXoAcpaWm8D/Hzvc3YTq3KV5j1DC/jJE8TK+OQ2suWSkzEPVhuGBGBX62SvYSgn5HHj6ChueCvLJpzYylUSpjB2bRMj6clpKAC3XOVuvcTBU/W5+Ej/Z4eJ+7I/DCE0d1Iw01jML59FN6++4CxXyuymcTq4XQoTjW0J7kuIlUiwm7RuDhScNjKUIWjcOHPeCI8NKhA2kwmOTVfvrkKlOGiVXw5U1J/iWS7KX560lhdOuGFvhvZPPN9xlikravMbY5DEDrr3SyIgAIiD/750gd7vspT98pUpykMqb3A+tnIH069uhrhjmKzP5zSaMJlNoTw=="
 
             //Gera um novo par de chaves RSA com 2048 bits de tamanho.
             //using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(2048))

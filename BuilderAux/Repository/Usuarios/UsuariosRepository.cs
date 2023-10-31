@@ -17,11 +17,11 @@ namespace BuilderAux.Repository.Usuarios
 {
     public class UsuariosRepository : IUsuariosRepository
     {
-        //private readonly AuthenticationController _authentication;
-        //public UsuariosRepository(AuthenticationController authentication)
-        //{
-        //    _authentication = authentication ?? throw new ArgumentNullException(nameof(authentication));
-        //}
+        private readonly AuthenticationServer _authentication;
+        public UsuariosRepository(AuthenticationServer authentication)
+        {
+            _authentication = authentication ?? throw new ArgumentNullException(nameof(authentication));
+        }
 
         public async Task<bool> DeleteAsync(string email)
          {
@@ -437,7 +437,6 @@ namespace BuilderAux.Repository.Usuarios
             string user;
             byte[] passUser = CriptografiaSenha.getInByteArray(userLogin.Senha ?? string.Empty);
             byte[] pass;
-            TokenService generateToken = new TokenService();
             string connectionString = StringConnection.GetString();
             Dictionary<string, string> retorno = new Dictionary<string, string>();
             #endregion
@@ -473,13 +472,12 @@ namespace BuilderAux.Repository.Usuarios
                         Aplication = "Login",
                         Expires = "20"
                     };
-                    AuthenticationController auth = new AuthenticationController();
-                    var auth2 = await auth.CreateToken(userAuth);
+                    var response = await _authentication.CreateToken(userAuth, context);
                     #region Construindo Retorno
-                    //retorno.Add("Token", auth.accessToken);
-                    //retorno.Add("Expiration", auth.expiration);
-                    //retorno.Add("Created", auth.created);
-                    //retorno.Add("Email", auth.email);
+                    retorno.Add("Token", response.accessToken);
+                    retorno.Add("Expiration", response.expiration);
+                    retorno.Add("Created", response.created);
+                    retorno.Add("Email", response.email);
                     retorno.Add("Nome", reader["Nome"].ToString() ?? string.Empty);
                     retorno.Add("Telefone", reader["Telefone"].ToString() ?? string.Empty);
                     retorno.Add("role", reader["Cargo"].ToString() ?? string.Empty);

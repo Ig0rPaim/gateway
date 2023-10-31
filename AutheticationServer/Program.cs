@@ -12,13 +12,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IValidator<UsuarioModel>, UsuariosValidator>();
 builder.Services.AddScoped<ITokenServices, TokenServices>();
-builder.Services.AddDistributedMemoryCache();
 
+builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
     options.Cookie.Name = ".AdventureWorks.Session";
     options.IdleTimeout = TimeSpan.FromMinutes(1);
     options.Cookie.IsEssential = true;
+    options.Cookie.HttpOnly = true;
 });
 
 
@@ -30,6 +31,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseSession();
 
 app.MapPost("token/gerar", async (HttpContext context,
     [FromHeader (Name = "Code")] string Code,
@@ -42,6 +44,10 @@ app.MapPost("token/gerar", async (HttpContext context,
         var token = await tokenServices.CreateToken(user, Code);
         if (token.authenticated)
         {
+            string nameSession = user.Email;
+            string dataUser = $"{user.Role};{user.Aplication};{user.Expires}";
+            context.Session.SetString(nameSession, dataUser);
+
             #region contruindo response
             response.Headers.Add("authenticated", token.authenticated.ToString());
             response.Headers.Add("TokenAuth", token.accessToken);
@@ -51,9 +57,7 @@ app.MapPost("token/gerar", async (HttpContext context,
             response.ContentType = "text/plain";
             await response.WriteAsync("Token Criado com sucesso");
             #endregion
-            string nameSession = user.Email;
-            string dataUser = $"{user.Role};{user.Aplication};{user.Expires}";
-            context.Session.SetString(nameSession, dataUser);
+            
         }
         else
         {
